@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>C3_oneway_anova.html</title>
+<meta charset="utf-8"/>
+<style>
+.details {visibility:hidden;}
+.procedureTitle{color: #1d3649;font-weight: 600;font-size: 20px;line-height: 24px;margin-left: 32px;font-family: monospace;}
+.pivot{color:#264A60;background-color:#FFFFFF;font-family:sans-serif;font-size:9pt;font-weight:normal;}
+.pivot th{font-weight:normal;}
+.pivot caption{padding-top:1pt;color:#010205;font-weight:bold;padding-left:6pt;vertical-align:middle;font-size:11pt;padding-bottom:6pt;text-align:center;padding-right:8pt;}
+.layers{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:bottom;padding-bottom:3pt;text-align:left;padding-right:8pt;}
+.cornerLabels{padding-top:3pt;padding-left:6pt;vertical-align:bottom;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot thead th:not:(.cornerLabels){padding-top:2pt;padding-left:6pt;vertical-align:bottom;padding-bottom:2pt;text-align:center;padding-right:8pt;}
+.pivot tbody th{background-color:#E0E0E0;padding-top:3pt;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:left;padding-right:8pt;}
+.pivot tbody td{background-color:#F9F9FB;padding-top:3pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:right;padding-right:8pt;}
+.pivot tbody tr:nth-child(even) td{background-color:#F9F9FB;color:#010205;}
+.caption{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot tfoot tr td{padding-top:2pt;color:#010205;padding-left:18pt;vertical-align:top;padding-bottom:3pt;text-align:left;padding-right:18pt;}
+.titleLayerSeparator{border-top:1px none #152935;}
+.pivot tbody{border-top:1px none #152935;border-right:1px none #152935;border-left:1px none #152935;border-bottom:1px solid #152935;}
+.pivot tbody tr td:first-of-type{border-left:1px none #152935;}
+.pivot tbody tr:first-child td{border-top:1px solid #152935;}
+.pivot tbody tr + tr{border-top:1px solid #AEAEAE;}
+.hDR{border-top:1px none #AEAEAE;}
+.vCR{border-left:1px none #AEAEAE;}
+.vDR{border-left:1px none #AEAEAE;}
+.hCC{border-bottom:1px none #AEAEAE;}
+.hDC{border-bottom:1px none #AEAEAE;}
+.pivot thead th:not(:last-child), .pivot td:not(:last-child){border-right:1px solid #e0e0e0;}
+.vDC{border-right:1px none #AEAEAE;}
+.pivot{margin: 80px 40px 40px 80px;}
+.pivot thead.tr.th {padding:0px;border-spacing:0px}
+.hal{text-align:left} .hac{text-align:center} .har{text-align:right}
+.val{vertical-align:left} .vac{vertical-align:center} .var{vertical-align:right}
+</style>
+</head>
+<body>
+
+<div>
+<style>
+*{
+border-collapse:collapse;
+}
+.Default .title{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:bold;
+padding-left:6pt;
+vertical-align:middle;
+font-size:11pt;
+padding-bottom:6pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .layers{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .cornerLabels{
+background-color:#ffffff;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .columnLabels{
+background-color:#ffffff;
+padding-top:2pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .rowLabels{
+background-color:#e0e0e0;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .o, .Default .e{
+background-color:#f9f9fb;
+padding-top:3pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:right;
+padding-right:8pt;
+}
+.Default .o{
+background-color:null;
+color:null;
+}
+.Default .e{
+background-color:#f9f9fb;
+color:#010205;
+}
+.Default .caption{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .footnotes{
+background-color:#ffffff;
+padding-top:2pt;
+color:#010205;
+font-weight:normal;
+padding-left:18pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:18pt;
+}
+.Default .titleLayerSeparator{
+border-top:1px none #152935;
+}
+.Default .innerFrameBd{
+border-top:1px none #152935;
+border-right:1px none #152935;
+border-left:1px none #152935;
+border-bottom:1px solid #152935;
+}
+.Default .dataAreaLeft{
+border-left:1px none #152935;
+}
+.Default .dataAreaTop{
+border-top:1px solid #152935;
+}
+.Default .hCR{
+border-top:1px solid #aeaeae;
+}
+.Default .hDR{
+border-top:1px none #aeaeae;
+}
+.Default .vCR{
+border-left:1px none #aeaeae;
+}
+.Default .vDR{
+border-left:1px none #aeaeae;
+}
+.Default .hCC{
+border-bottom:1px none #aeaeae;
+}
+.Default .hDC{
+border-bottom:1px none #aeaeae;
+}
+.Default .vCC{
+border-right:1px solid #e0e0e0;
+}
+.Default .vDC{
+border-right:1px none #aeaeae;
+}
+</style>
+</div>
+<div class="itemBody">
+<table summary="Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表" style="width:474px" class="Default PivotTable" aria-label="Notes" role="complementary" data-lookName="Default" data-rowLabelWidth="2" data-colLabelHeight="0" data-NumRows="12" data-NumCols="1" data-rowLabels="Corner" data-decimal-char="." data-col-labels="" data-row-labels="Output Created ;Comments ;Input Data; Filter; Weight; Split File; N of Rows in Working Data File;Missing Value Handling Definition of Missing; Cases Used;Syntax ;Resources Processor Time; Elapsed Time" data-layer-dimension="" data-column-dimension="" data-row-dimension="Contents;" data-maxColWidth="122">
+<caption class="title" style="width:474px">Notes<span class="details">Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表</span></caption>
+<tbody class="PivotBody defaultLayer innerFrameBd">
+<tr>
+<th class="rowLabels dataAreaTop role3" colspan="2">Output Created</th>
+<td class=" o dataAreaTop dataAreaLeft">25-MAY-2026 19:49:09</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Comments</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&nbsp;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="5">Input</th>
+<th class="rowLabels hCR vCR role3">Data</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">/Users/opalus/Downloads/xianyu/2026/05/0525/5月25日_SPSS全功能验证/datasets/survey_likert.sav</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Filter</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Weight</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Split File</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">N of Rows in Working Data File</th>
+<td class=" o dataAreaLeft hCR">400</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Missing Value Handling</th>
+<th class="rowLabels hCR vCR role3">Definition of Missing</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">User-defined missing values are treated as missing.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Cases Used</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">Statistics for each analysis are based on cases with no missing data for any variable in the analysis.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Syntax</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">ONEWAY total BY age_group<br>  /STATISTICS DESCRIPTIVES HOMOGENEITY<br>  /POSTHOC=BONFERRONI ALPHA(0.05).</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Resources</th>
+<th class="rowLabels hCR vCR role3">Processor Time</th>
+<td class=" o dataAreaLeft hCR">00:00:00.02</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Elapsed Time</th>
+<td class=" e dataAreaLeft hCR">25-MAY-2026 19:49:09</td>
+</tr>
+<tr>
+<td  style="width:152px;padding:0px;border-spacing:0px"></td>
+<td  style="width:160px;padding:0px;border-spacing:0px"></td>
+<td  style="width:162px;padding:0px;border-spacing:0px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="pivot" data-rows="1,1,2,4,0,0" data-cols="1,8" data-heights="27,19,54,84,0" data-widths="106,752" data-curCounts="4,8" data-curSizess="4,8">
+<caption colspan="9">Descriptives</caption>
+<thead><tr><th class="layers" colspan="9">总分</th></tr>
+
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th rowspan="2">N</th><th rowspan="2">Mean</th><th rowspan="2">Std. Deviation</th><th rowspan="2">Std. Error</th><th colspan="2">95% Confidence Interval for Mean</th><th rowspan="2">Minimum</th><th rowspan="2">Maximum</th></tr>
+<tr><th>Lower Bound</th><th>Upper Bound</th></tr>
+</thead>
+<tbody data-rect="0,3,0,7">
+<tr><th style="min-width:106px">青年（&lt;35）</th><td style="min-width:67px">143</td><td style="min-width:71px">36.4668</td><td style="min-width:96px">7.97346</td><td style="min-width:74px">.66677</td><td style="min-width:96px">35.1487</td><td style="min-width:96px">37.7849</td><td style="min-width:71px">17.70</td><td style="min-width:75px">57.28</td></tr>
+<tr><th>中年（35-50）</th><td>166</td><td>37.6674</td><td>7.30718</td><td>.56715</td><td>36.5476</td><td>38.7872</td><td>22.41</td><td>54.95</td></tr>
+<tr><th>中老年（&gt;50）</th><td>91</td><td>37.8958</td><td>7.17932</td><td>.75260</td><td>36.4007</td><td>39.3910</td><td>25.40</td><td>56.59</td></tr>
+<tr><th>Total</th><td>400</td><td>37.2901</td><td>7.53118</td><td>.37656</td><td>36.5499</td><td>38.0304</td><td>17.70</td><td>57.28</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,4,0,0" data-cols="2,4" data-heights="27,0,34,112,0" data-widths="208,509" data-curCounts="4,4" data-curSizess="4,4">
+<caption colspan="6">Tests of Homogeneity of Variances</caption>
+<thead>
+<tr><th class="cornerLabels" colspan="2">&nbsp;</th><th>Levene Statistic</th><th>df1</th><th>df2</th><th>Sig.</th></tr>
+</thead>
+<tbody data-rect="0,3,0,3">
+<tr><th rowspan="4" style="min-width:48px">总分</th><th style="min-width:160px">Based on Mean</th><td style="min-width:96px">.661</td><td style="min-width:67px">2</td><td style="min-width:71px">397</td><td style="min-width:67px">.517</td></tr>
+<tr><th>Based on Median</th><td>.559</td><td>2</td><td>397</td><td>.572</td></tr>
+<tr><th>Based on Median and with adjusted df</th><td>.559</td><td>2</td><td>387.063</td><td>.572</td></tr>
+<tr><th>Based on trimmed mean</th><td>.633</td><td>2</td><td>397</td><td>.531</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,1,1,3,0,0" data-cols="1,5" data-heights="27,19,34,63,0" data-widths="113,504" data-curCounts="3,5" data-curSizess="3,5">
+<caption colspan="6">ANOVA</caption>
+<thead><tr><th class="layers" colspan="6">总分</th></tr>
+
+<tr><th class="cornerLabels">&nbsp;</th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr>
+</thead>
+<tbody data-rect="0,2,0,4">
+<tr><th style="min-width:113px">Between Groups</th><td style="min-width:96px">153.947</td><td style="min-width:67px">2</td><td style="min-width:94px">76.974</td><td style="min-width:67px">1.360</td><td style="min-width:67px">.258</td></tr>
+<tr><th>Within Groups</th><td>22476.783</td><td>397</td><td>56.617</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>Total</th><td>22630.731</td><td>399</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,2,2,6,0,0" data-cols="2,5" data-heights="27,38,48,126,0" data-widths="212,637" data-curCounts="6,5" data-curSizess="6,5">
+<caption colspan="7">Multiple Comparisons</caption>
+<thead><tr><th class="layers" colspan="7">Dependent Variable:总分</th></tr>
+<tr><th class="layers" colspan="7">Bonferroni</th></tr>
+
+<tr><th class="cornerLabels" rowspan="2">(I) 年龄段</th><th class="cornerLabels" rowspan="2">(J) 年龄段</th><th rowspan="2">Mean Difference (I-J)</th><th rowspan="2">Std. Error</th><th rowspan="2">Sig.</th><th>95% Confidence Interval</th></tr>
+<tr><th>Lower Bound</th><th>Upper Bound</th></tr>
+</thead>
+<tbody data-rect="0,5,0,4">
+<tr><th rowspan="2" style="min-width:106px">青年（&lt;35）</th><th style="min-width:106px">中年（35-50）</th><td style="min-width:96px">-1.20060</td><td style="min-width:74px">.85848</td><td style="min-width:67px">.488</td><td style="min-width:93px">-3.2645</td><td style="min-width:95px">.8633</td></tr>
+<tr><th>中老年（&gt;50）</th><td>-1.42903</td><td>1.00900</td><td>.472</td><td>-3.8548</td><td>.9968</td></tr>
+<tr><th rowspan="2">中年（35-50）</th><th>青年（&lt;35）</th><td>1.20060</td><td>.85848</td><td>.488</td><td>-.8633</td><td>3.2645</td></tr>
+<tr><th>中老年（&gt;50）</th><td>-.22843</td><td>.98144</td><td>1.000</td><td>-2.5880</td><td>2.1311</td></tr>
+<tr><th rowspan="2">中老年（&gt;50）</th><th>青年（&lt;35）</th><td>1.42903</td><td>1.00900</td><td>.472</td><td>-.9968</td><td>3.8548</td></tr>
+<tr><th>中年（35-50）</th><td>.22843</td><td>.98144</td><td>1.000</td><td>-2.1311</td><td>2.5880</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

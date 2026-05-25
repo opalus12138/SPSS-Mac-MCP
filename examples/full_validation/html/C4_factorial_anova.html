@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>C4_factorial_anova.html</title>
+<meta charset="utf-8"/>
+<style>
+.details {visibility:hidden;}
+.procedureTitle{color: #1d3649;font-weight: 600;font-size: 20px;line-height: 24px;margin-left: 32px;font-family: monospace;}
+.pivot{color:#264A60;background-color:#FFFFFF;font-family:sans-serif;font-size:9pt;font-weight:normal;}
+.pivot th{font-weight:normal;}
+.pivot caption{padding-top:1pt;color:#010205;font-weight:bold;padding-left:6pt;vertical-align:middle;font-size:11pt;padding-bottom:6pt;text-align:center;padding-right:8pt;}
+.layers{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:bottom;padding-bottom:3pt;text-align:left;padding-right:8pt;}
+.cornerLabels{padding-top:3pt;padding-left:6pt;vertical-align:bottom;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot thead th:not:(.cornerLabels){padding-top:2pt;padding-left:6pt;vertical-align:bottom;padding-bottom:2pt;text-align:center;padding-right:8pt;}
+.pivot tbody th{background-color:#E0E0E0;padding-top:3pt;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:left;padding-right:8pt;}
+.pivot tbody td{background-color:#F9F9FB;padding-top:3pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:right;padding-right:8pt;}
+.pivot tbody tr:nth-child(even) td{background-color:#F9F9FB;color:#010205;}
+.caption{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot tfoot tr td{padding-top:2pt;color:#010205;padding-left:18pt;vertical-align:top;padding-bottom:3pt;text-align:left;padding-right:18pt;}
+.titleLayerSeparator{border-top:1px none #152935;}
+.pivot tbody{border-top:1px none #152935;border-right:1px none #152935;border-left:1px none #152935;border-bottom:1px solid #152935;}
+.pivot tbody tr td:first-of-type{border-left:1px none #152935;}
+.pivot tbody tr:first-child td{border-top:1px solid #152935;}
+.pivot tbody tr + tr{border-top:1px solid #AEAEAE;}
+.hDR{border-top:1px none #AEAEAE;}
+.vCR{border-left:1px none #AEAEAE;}
+.vDR{border-left:1px none #AEAEAE;}
+.hCC{border-bottom:1px none #AEAEAE;}
+.hDC{border-bottom:1px none #AEAEAE;}
+.pivot thead th:not(:last-child), .pivot td:not(:last-child){border-right:1px solid #e0e0e0;}
+.vDC{border-right:1px none #AEAEAE;}
+.pivot{margin: 80px 40px 40px 80px;}
+.pivot thead.tr.th {padding:0px;border-spacing:0px}
+.hal{text-align:left} .hac{text-align:center} .har{text-align:right}
+.val{vertical-align:left} .vac{vertical-align:center} .var{vertical-align:right}
+</style>
+</head>
+<body>
+
+<div>
+<style>
+*{
+border-collapse:collapse;
+}
+.Default .title{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:bold;
+padding-left:6pt;
+vertical-align:middle;
+font-size:11pt;
+padding-bottom:6pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .layers{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .cornerLabels{
+background-color:#ffffff;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .columnLabels{
+background-color:#ffffff;
+padding-top:2pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .rowLabels{
+background-color:#e0e0e0;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .o, .Default .e{
+background-color:#f9f9fb;
+padding-top:3pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:right;
+padding-right:8pt;
+}
+.Default .o{
+background-color:null;
+color:null;
+}
+.Default .e{
+background-color:#f9f9fb;
+color:#010205;
+}
+.Default .caption{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .footnotes{
+background-color:#ffffff;
+padding-top:2pt;
+color:#010205;
+font-weight:normal;
+padding-left:18pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:18pt;
+}
+.Default .titleLayerSeparator{
+border-top:1px none #152935;
+}
+.Default .innerFrameBd{
+border-top:1px none #152935;
+border-right:1px none #152935;
+border-left:1px none #152935;
+border-bottom:1px solid #152935;
+}
+.Default .dataAreaLeft{
+border-left:1px none #152935;
+}
+.Default .dataAreaTop{
+border-top:1px solid #152935;
+}
+.Default .hCR{
+border-top:1px solid #aeaeae;
+}
+.Default .hDR{
+border-top:1px none #aeaeae;
+}
+.Default .vCR{
+border-left:1px none #aeaeae;
+}
+.Default .vDR{
+border-left:1px none #aeaeae;
+}
+.Default .hCC{
+border-bottom:1px none #aeaeae;
+}
+.Default .hDC{
+border-bottom:1px none #aeaeae;
+}
+.Default .vCC{
+border-right:1px solid #e0e0e0;
+}
+.Default .vDC{
+border-right:1px none #aeaeae;
+}
+</style>
+</div>
+<div class="itemBody">
+<table summary="Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表" style="width:474px" class="Default PivotTable" aria-label="Notes" role="complementary" data-lookName="Default" data-rowLabelWidth="2" data-colLabelHeight="0" data-NumRows="12" data-NumCols="1" data-rowLabels="Corner" data-decimal-char="." data-col-labels="" data-row-labels="Output Created ;Comments ;Input Data; Filter; Weight; Split File; N of Rows in Working Data File;Missing Value Handling Definition of Missing; Cases Used;Syntax ;Resources Processor Time; Elapsed Time" data-layer-dimension="" data-column-dimension="" data-row-dimension="Contents;" data-maxColWidth="122">
+<caption class="title" style="width:474px">Notes<span class="details">Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表</span></caption>
+<tbody class="PivotBody defaultLayer innerFrameBd">
+<tr>
+<th class="rowLabels dataAreaTop role3" colspan="2">Output Created</th>
+<td class=" o dataAreaTop dataAreaLeft">25-MAY-2026 19:49:09</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Comments</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&nbsp;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="5">Input</th>
+<th class="rowLabels hCR vCR role3">Data</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">/Users/opalus/Downloads/xianyu/2026/05/0525/5月25日_SPSS全功能验证/datasets/experiment.sav</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Filter</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Weight</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Split File</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">N of Rows in Working Data File</th>
+<td class=" o dataAreaLeft hCR">150</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Missing Value Handling</th>
+<th class="rowLabels hCR vCR role3">Definition of Missing</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">User-defined missing values are treated as missing.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Cases Used</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">Statistics are based on all cases with valid data for all variables in the model.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Syntax</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">UNIANOVA t4_week8 BY treatment intensity<br>  /METHOD=SSTYPE(3) /INTERCEPT=INCLUDE<br>  /POSTHOC=treatment(BONFERRONI)<br>  /EMMEANS=TABLES(treatment*intensity)<br>  /PRINT=DESCRIPTIVE HOMOGENEITY ETASQ.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Resources</th>
+<th class="rowLabels hCR vCR role3">Processor Time</th>
+<td class=" o dataAreaLeft hCR">00:00:00.04</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Elapsed Time</th>
+<td class=" e dataAreaLeft hCR">25-MAY-2026 19:49:09</td>
+</tr>
+<tr>
+<td  style="width:152px;padding:0px;border-spacing:0px"></td>
+<td  style="width:160px;padding:0px;border-spacing:0px"></td>
+<td  style="width:162px;padding:0px;border-spacing:0px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,5,0,0" data-cols="2,2" data-heights="27,0,20,105,0" data-widths="115,268" data-curCounts="5,2" data-curSizess="5,2">
+<caption colspan="4">Between-Subjects Factors</caption>
+<thead>
+<tr><th class="cornerLabels" colspan="2">&nbsp;</th><th>Value Label</th><th>N</th></tr>
+</thead>
+<tbody data-rect="0,4,0,1">
+<tr><th rowspan="3" style="min-width:67px">处理组</th><th style="min-width:48px">.00</th><td class=" hal" style="min-width:86px">对照组</td><td style="min-width:67px">53</td></tr>
+<tr><th>1.00</th><td class=" hal">处理A</td><td>54</td></tr>
+<tr><th>2.00</th><td class=" hal">处理B</td><td>43</td></tr>
+<tr><th rowspan="2">强度水平</th><th>1.00</th><td class=" hal">低强度</td><td>78</td></tr>
+<tr><th>2.00</th><td class=" hal">高强度</td><td>72</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,1,1,12,0,0" data-cols="2,3" data-heights="27,19,34,252,0" data-widths="122,356" data-curCounts="12,3" data-curSizess="12,3">
+<caption colspan="5">Descriptive Statistics</caption>
+<thead><tr><th class="layers" colspan="5">Dependent Variable:第8周</th></tr>
+
+<tr><th class="cornerLabels">处理组</th><th class="cornerLabels">强度水平</th><th>Mean</th><th>Std. Deviation</th><th>N</th></tr>
+</thead>
+<tbody data-rect="0,11,0,2">
+<tr><th rowspan="3" style="min-width:55px">对照组</th><th style="min-width:67px">低强度</th><td style="min-width:71px">53.0545</td><td style="min-width:96px">9.15482</td><td style="min-width:67px">27</td></tr>
+<tr><th>高强度</th><td>56.4178</td><td>8.01933</td><td>26</td></tr>
+<tr><th>Total</th><td>54.7044</td><td>8.70085</td><td>53</td></tr>
+<tr><th rowspan="3">处理A</th><th>低强度</th><td>58.3058</td><td>10.10925</td><td>32</td></tr>
+<tr><th>高强度</th><td>61.8165</td><td>6.88801</td><td>22</td></tr>
+<tr><th>Total</th><td>59.7361</td><td>9.03361</td><td>54</td></tr>
+<tr><th rowspan="3">处理B</th><th>低强度</th><td>60.2729</td><td>6.92549</td><td>19</td></tr>
+<tr><th>高强度</th><td>68.8547</td><td>7.97162</td><td>24</td></tr>
+<tr><th>Total</th><td>65.0628</td><td>8.59942</td><td>43</td></tr>
+<tr><th rowspan="3">Total</th><th>低强度</th><td>56.9672</td><td>9.45860</td><td>78</td></tr>
+<tr><th>高强度</th><td>62.2130</td><td>9.19354</td><td>72</td></tr>
+<tr><th>Total</th><td>59.4852</td><td>9.66559</td><td>150</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,4,1,0" data-cols="2,4" data-heights="27,0,34,112,30" data-widths="211,512" data-curCounts="4,4" data-curSizess="4,4">
+<caption colspan="6">Levene's Test of Equality of Error Variances</caption>
+<thead>
+<tr><th class="cornerLabels" colspan="2">&nbsp;</th><th>Levene Statistic</th><th>df1</th><th>df2</th><th>Sig.</th></tr>
+</thead>
+<tbody data-rect="0,3,0,3">
+<tr><th rowspan="4" style="min-width:51px">第8周</th><th style="min-width:160px">Based on Mean</th><td style="min-width:96px">1.295</td><td style="min-width:67px">5</td><td style="min-width:71px">144</td><td style="min-width:67px">.269</td></tr>
+<tr><th>Based on Median</th><td>1.160</td><td>5</td><td>144</td><td>.332</td></tr>
+<tr><th>Based on Median and with adjusted df</th><td>1.160</td><td>5</td><td>135.049</td><td>.332</td></tr>
+<tr><th>Based on trimmed mean</th><td>1.320</td><td>5</td><td>144</td><td>.259</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="6">Tests the null hypothesis that the error variance of the dependent variable is equal across groups.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,1,1,8,0,1" data-cols="1,6" data-heights="27,19,34,170,21" data-widths="136,636" data-curCounts="8,6" data-curSizess="8,6">
+<caption colspan="7">Tests of Between-Subjects Effects</caption>
+<thead><tr><th class="layers" colspan="7">Dependent Variable:第8周</th></tr>
+
+<tr><th class="cornerLabels">Source</th><th>Type III Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th><th>Partial Eta Squared</th></tr>
+</thead>
+<tbody data-rect="0,7,0,5">
+<tr><th style="min-width:136px">Corrected Model</th><td style="min-width:96px" title="a. R Squared = .262 (Adjusted R Squared = .236)">3643.951<sup>a</sup></td><td style="min-width:67px">5</td><td style="min-width:95px">728.790</td><td style="min-width:79px">10.213</td><td style="min-width:67px">.000</td><td style="min-width:96px">.262</td></tr>
+<tr><th>Intercept</th><td>522032.191</td><td>1</td><td>522032.191</td><td>7315.243</td><td>.000</td><td>.981</td></tr>
+<tr><th>treatment</th><td>2306.021</td><td>2</td><td>1153.011</td><td>16.157</td><td>.000</td><td>.183</td></tr>
+<tr><th>intensity</th><td>969.077</td><td>1</td><td>969.077</td><td>13.580</td><td>.000</td><td>.086</td></tr>
+<tr><th>treatment * intensity</th><td>200.186</td><td>2</td><td>100.093</td><td>1.403</td><td>.249</td><td>.019</td></tr>
+<tr><th>Error</th><td>10276.164</td><td>144</td><td>71.362</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>Total</th><td>544693.679</td><td>150</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>Corrected Total</th><td>13920.115</td><td>149</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="7">a.&nbsp;R Squared = .262 (Adjusted R Squared = .236)</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,1,2,6,0,0" data-cols="2,4" data-heights="27,19,40,126,0" data-widths="122,451" data-curCounts="6,4" data-curSizess="6,4">
+<caption colspan="6">处理组 * 强度水平</caption>
+<thead><tr><th class="layers" colspan="6">Dependent Variable:第8周</th></tr>
+
+<tr><th class="cornerLabels" rowspan="2">处理组</th><th class="cornerLabels" rowspan="2">强度水平</th><th rowspan="2">Mean</th><th rowspan="2">Std. Error</th><th>95% Confidence Interval</th></tr>
+<tr><th>Lower Bound</th><th>Upper Bound</th></tr>
+</thead>
+<tbody data-rect="0,5,0,3">
+<tr><th rowspan="2" style="min-width:55px">对照组</th><th style="min-width:67px">低强度</th><td style="min-width:67px">53.055</td><td style="min-width:74px">1.626</td><td style="min-width:93px">49.841</td><td style="min-width:95px">56.268</td></tr>
+<tr><th>高强度</th><td>56.418</td><td>1.657</td><td>53.143</td><td>59.692</td></tr>
+<tr><th rowspan="2">处理A</th><th>低强度</th><td>58.306</td><td>1.493</td><td>55.354</td><td>61.257</td></tr>
+<tr><th>高强度</th><td>61.816</td><td>1.801</td><td>58.257</td><td>65.376</td></tr>
+<tr><th rowspan="2">处理B</th><th>低强度</th><td>60.273</td><td>1.938</td><td>56.442</td><td>64.104</td></tr>
+<tr><th>高强度</th><td>68.855</td><td>1.724</td><td>65.446</td><td>72.263</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,2,2,6,1,1" data-cols="2,5" data-heights="27,38,48,138,51" data-widths="141,566" data-curCounts="6,5" data-curSizess="6,5">
+<caption colspan="7">Multiple Comparisons</caption>
+<thead><tr><th class="layers" colspan="7">Dependent Variable:第8周</th></tr>
+<tr><th class="layers" colspan="7">Bonferroni</th></tr>
+
+<tr><th class="cornerLabels" rowspan="2">(I) 处理组</th><th class="cornerLabels" rowspan="2">(J) 处理组</th><th rowspan="2">Mean Difference (I-J)</th><th rowspan="2">Std. Error</th><th rowspan="2">Sig.</th><th>95% Confidence Interval</th></tr>
+<tr><th>Lower Bound</th><th>Upper Bound</th></tr>
+</thead>
+<tbody data-rect="0,5,0,4">
+<tr><th rowspan="2" style="min-width:70px">对照组</th><th style="min-width:71px">处理A</th><td style="min-width:96px" title="*. The mean difference is significant at the .050 level.">-5.0316<sup>*</sup></td><td style="min-width:74px">1.63340</td><td style="min-width:67px">.007</td><td style="min-width:93px">-8.9882</td><td style="min-width:95px">-1.0751</td></tr>
+<tr><th>处理B</th><td title="*. The mean difference is significant at the .050 level.">-10.3583<sup>*</sup></td><td>1.73379</td><td>.000</td><td>-14.5580</td><td>-6.1586</td></tr>
+<tr><th rowspan="2">处理A</th><th>对照组</th><td title="*. The mean difference is significant at the .050 level.">5.0316<sup>*</sup></td><td>1.63340</td><td>.007</td><td>1.0751</td><td>8.9882</td></tr>
+<tr><th>处理B</th><td title="*. The mean difference is significant at the .050 level.">-5.3267<sup>*</sup></td><td>1.72659</td><td>.007</td><td>-9.5090</td><td>-1.1444</td></tr>
+<tr><th rowspan="2">处理B</th><th>对照组</th><td title="*. The mean difference is significant at the .050 level.">10.3583<sup>*</sup></td><td>1.73379</td><td>.000</td><td>6.1586</td><td>14.5580</td></tr>
+<tr><th>处理A</th><td title="*. The mean difference is significant at the .050 level.">5.3267<sup>*</sup></td><td>1.72659</td><td>.007</td><td>1.1444</td><td>9.5090</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="7">Based on observed means.<br> The error term is Mean Square(Error) = 71.362.</td></tr>
+<tr><td colspan="7">*.&nbsp;The mean difference is significant at the .050 level.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+</body>
+</html>

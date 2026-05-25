@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>E2_factor_analysis.html</title>
+<meta charset="utf-8"/>
+<style>
+.details {visibility:hidden;}
+.procedureTitle{color: #1d3649;font-weight: 600;font-size: 20px;line-height: 24px;margin-left: 32px;font-family: monospace;}
+.pivot{color:#264A60;background-color:#FFFFFF;font-family:sans-serif;font-size:9pt;font-weight:normal;}
+.pivot th{font-weight:normal;}
+.pivot caption{padding-top:1pt;color:#010205;font-weight:bold;padding-left:6pt;vertical-align:middle;font-size:11pt;padding-bottom:6pt;text-align:center;padding-right:8pt;}
+.layers{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:bottom;padding-bottom:3pt;text-align:left;padding-right:8pt;}
+.cornerLabels{padding-top:3pt;padding-left:6pt;vertical-align:bottom;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot thead th:not:(.cornerLabels){padding-top:2pt;padding-left:6pt;vertical-align:bottom;padding-bottom:2pt;text-align:center;padding-right:8pt;}
+.pivot tbody th{background-color:#E0E0E0;padding-top:3pt;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:left;padding-right:8pt;}
+.pivot tbody td{background-color:#F9F9FB;padding-top:3pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:right;padding-right:8pt;}
+.pivot tbody tr:nth-child(even) td{background-color:#F9F9FB;color:#010205;}
+.caption{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot tfoot tr td{padding-top:2pt;color:#010205;padding-left:18pt;vertical-align:top;padding-bottom:3pt;text-align:left;padding-right:18pt;}
+.titleLayerSeparator{border-top:1px none #152935;}
+.pivot tbody{border-top:1px none #152935;border-right:1px none #152935;border-left:1px none #152935;border-bottom:1px solid #152935;}
+.pivot tbody tr td:first-of-type{border-left:1px none #152935;}
+.pivot tbody tr:first-child td{border-top:1px solid #152935;}
+.pivot tbody tr + tr{border-top:1px solid #AEAEAE;}
+.hDR{border-top:1px none #AEAEAE;}
+.vCR{border-left:1px none #AEAEAE;}
+.vDR{border-left:1px none #AEAEAE;}
+.hCC{border-bottom:1px none #AEAEAE;}
+.hDC{border-bottom:1px none #AEAEAE;}
+.pivot thead th:not(:last-child), .pivot td:not(:last-child){border-right:1px solid #e0e0e0;}
+.vDC{border-right:1px none #AEAEAE;}
+.pivot{margin: 80px 40px 40px 80px;}
+.pivot thead.tr.th {padding:0px;border-spacing:0px}
+.hal{text-align:left} .hac{text-align:center} .har{text-align:right}
+.val{vertical-align:left} .vac{vertical-align:center} .var{vertical-align:right}
+</style>
+</head>
+<body>
+
+<div>
+<style>
+*{
+border-collapse:collapse;
+}
+.Default .title{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:bold;
+padding-left:6pt;
+vertical-align:middle;
+font-size:11pt;
+padding-bottom:6pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .layers{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .cornerLabels{
+background-color:#ffffff;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .columnLabels{
+background-color:#ffffff;
+padding-top:2pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .rowLabels{
+background-color:#e0e0e0;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .o, .Default .e{
+background-color:#f9f9fb;
+padding-top:3pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:right;
+padding-right:8pt;
+}
+.Default .o{
+background-color:null;
+color:null;
+}
+.Default .e{
+background-color:#f9f9fb;
+color:#010205;
+}
+.Default .caption{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .footnotes{
+background-color:#ffffff;
+padding-top:2pt;
+color:#010205;
+font-weight:normal;
+padding-left:18pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:18pt;
+}
+.Default .titleLayerSeparator{
+border-top:1px none #152935;
+}
+.Default .innerFrameBd{
+border-top:1px none #152935;
+border-right:1px none #152935;
+border-left:1px none #152935;
+border-bottom:1px solid #152935;
+}
+.Default .dataAreaLeft{
+border-left:1px none #152935;
+}
+.Default .dataAreaTop{
+border-top:1px solid #152935;
+}
+.Default .hCR{
+border-top:1px solid #aeaeae;
+}
+.Default .hDR{
+border-top:1px none #aeaeae;
+}
+.Default .vCR{
+border-left:1px none #aeaeae;
+}
+.Default .vDR{
+border-left:1px none #aeaeae;
+}
+.Default .hCC{
+border-bottom:1px none #aeaeae;
+}
+.Default .hDC{
+border-bottom:1px none #aeaeae;
+}
+.Default .vCC{
+border-right:1px solid #e0e0e0;
+}
+.Default .vDC{
+border-right:1px none #aeaeae;
+}
+</style>
+</div>
+<div class="itemBody">
+<table summary="Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 14 行的表" style="width:474px" class="Default PivotTable" aria-label="Notes" role="complementary" data-lookName="Default" data-rowLabelWidth="2" data-colLabelHeight="0" data-NumRows="13" data-NumCols="1" data-rowLabels="Corner" data-decimal-char="." data-col-labels="" data-row-labels="Output Created ;Comments ;Input Data; Filter; Weight; Split File; N of Rows in Working Data File;Missing Value Handling Definition of Missing; Cases Used;Syntax ;Resources Processor Time; Elapsed Time; Maximum Memory Required" data-layer-dimension="" data-column-dimension="" data-row-dimension="Contents;" data-maxColWidth="122">
+<caption class="title" style="width:474px">Notes<span class="details">Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 14 行的表</span></caption>
+<tbody class="PivotBody defaultLayer innerFrameBd">
+<tr>
+<th class="rowLabels dataAreaTop role3" colspan="2">Output Created</th>
+<td class=" o dataAreaTop dataAreaLeft">25-MAY-2026 19:49:14</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Comments</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&nbsp;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="5">Input</th>
+<th class="rowLabels hCR vCR role3">Data</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">/Users/opalus/Downloads/xianyu/2026/05/0525/5月25日_SPSS全功能验证/datasets/survey_likert.sav</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Filter</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Weight</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Split File</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">N of Rows in Working Data File</th>
+<td class=" o dataAreaLeft hCR">400</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Missing Value Handling</th>
+<th class="rowLabels hCR vCR role3">Definition of Missing</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">MISSING=EXCLUDE: User-defined missing values are treated as missing.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Cases Used</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">LISTWISE: Statistics are based on cases with no missing values for any variable used.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Syntax</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">FACTOR /VARIABLES Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q11 Q12<br>  /MISSING LISTWISE<br>  /ANALYSIS Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10 Q11 Q12<br>  /PRINT INITIAL KMO EXTRACTION ROTATION<br>  /CRITERIA MINEIGEN(1) ITERATE(25)<br>  /EXTRACTION PC<br>  /CRITERIA ITERATE(25)<br>  /ROTATION VARIMAX<br>  /METHOD=CORRELATION.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="3">Resources</th>
+<th class="rowLabels hCR vCR role3">Processor Time</th>
+<td class=" o dataAreaLeft hCR">00:00:00.03</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Elapsed Time</th>
+<td class=" e dataAreaLeft hCR">00:00:00.00</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Maximum Memory Required</th>
+<td class=" o dataAreaLeft hCR">25-MAY-2026 19:49:14</td>
+</tr>
+<tr>
+<td  style="width:152px;padding:0px;border-spacing:0px"></td>
+<td  style="width:160px;padding:0px;border-spacing:0px"></td>
+<td  style="width:162px;padding:0px;border-spacing:0px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,0,4,0,0" data-cols="2,1" data-heights="27,0,0,98,0" data-widths="320,399" data-curCounts="4,1" data-curSizess="4,1">
+<caption colspan="3">KMO and Bartlett's Test</caption>
+<thead>
+</thead>
+<tbody data-rect="0,3,0,0">
+<tr><th colspan="2">Kaiser-Meyer-Olkin Measure of Sampling Adequacy.</th><td style="min-width:79px">.905</td></tr>
+<tr><th rowspan="3" style="min-width:160px">Bartlett's Test of Sphericity</th><th style="min-width:160px">Approx. Chi-Square</th><td>2081.029</td></tr>
+<tr><th>df</th><td>66</td></tr>
+<tr><th>Sig.</th><td>.000</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,12,1,0" data-cols="1,2" data-heights="27,0,20,252,30" data-widths="139,282" data-curCounts="12,2" data-curSizess="12,2">
+<caption colspan="3">Communalities</caption>
+<thead>
+<tr><th class="cornerLabels">&nbsp;</th><th>Initial</th><th>Extraction</th></tr>
+</thead>
+<tbody data-rect="0,11,0,1">
+<tr><th style="min-width:139px">题项1（5点李克特）</th><td style="min-width:67px">1.000</td><td style="min-width:76px">.569</td></tr>
+<tr><th>题项2（5点李克特）</th><td>1.000</td><td>.608</td></tr>
+<tr><th>题项3（5点李克特）</th><td>1.000</td><td>.631</td></tr>
+<tr><th>题项4（5点李克特）</th><td>1.000</td><td>.617</td></tr>
+<tr><th>题项5（5点李克特）</th><td>1.000</td><td>.565</td></tr>
+<tr><th>题项6（5点李克特）</th><td>1.000</td><td>.532</td></tr>
+<tr><th>题项7（5点李克特）</th><td>1.000</td><td>.640</td></tr>
+<tr><th>题项8（5点李克特）</th><td>1.000</td><td>.595</td></tr>
+<tr><th>题项9（5点李克特）</th><td>1.000</td><td>.627</td></tr>
+<tr><th>题项10（5点李克特）</th><td>1.000</td><td>.672</td></tr>
+<tr><th>题项11（5点李克特）</th><td>1.000</td><td>.638</td></tr>
+<tr><th>题项12（5点李克特）</th><td>1.000</td><td>.653</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Extraction Method: Principal Component Analysis.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,12,1,0" data-cols="1,9" data-heights="27,0,40,252,16" data-widths="85,874" data-curCounts="12,9" data-curSizess="12,9">
+<caption colspan="10">Total Variance Explained</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">Component</th><th colspan="3">Initial Eigenvalues</th><th colspan="3">Extraction Sums of Squared Loadings</th><th colspan="2">Rotation Sums of Squared Loadings</th></tr>
+<tr><th>Total</th><th>% of Variance</th><th>Cumulative %</th><th>Total</th><th>% of Variance</th><th>Cumulative %</th><th>Total</th><th>% of Variance</th><th>Cumulative %</th></tr>
+</thead>
+<tbody data-rect="0,11,0,8">
+<tr><th style="min-width:85px">1</th><td style="min-width:67px">4.660</td><td style="min-width:96px">38.829</td><td style="min-width:94px">38.829</td><td style="min-width:78px">4.660</td><td style="min-width:96px">38.829</td><td style="min-width:94px">38.829</td><td style="min-width:74px">3.806</td><td style="min-width:96px">31.714</td><td style="min-width:94px">31.714</td></tr>
+<tr><th>2</th><td>2.690</td><td>22.416</td><td>61.245</td><td>2.690</td><td>22.416</td><td>61.245</td><td>3.544</td><td>29.532</td><td>61.245</td></tr>
+<tr><th>3</th><td>.604</td><td>5.036</td><td>66.281</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>4</th><td>.555</td><td>4.624</td><td>70.905</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>5</th><td>.541</td><td>4.511</td><td>75.416</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>6</th><td>.511</td><td>4.259</td><td>79.675</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>7</th><td>.468</td><td>3.899</td><td>83.574</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>8</th><td>.437</td><td>3.645</td><td>87.218</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>9</th><td>.417</td><td>3.475</td><td>90.693</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>10</th><td>.398</td><td>3.320</td><td>94.014</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>11</th><td>.370</td><td>3.086</td><td>97.100</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>12</th><td>.348</td><td>2.900</td><td>100.000</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="10">Extraction Method: Principal Component Analysis.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,12,1,0" data-cols="1,2" data-heights="27,0,40,252,30" data-widths="139,273" data-curCounts="12,2" data-curSizess="12,2">
+<caption colspan="3">Component Matrix</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th>Component</th></tr>
+<tr><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,11,0,1">
+<tr><th style="min-width:139px">题项1（5点李克特）</th><td style="min-width:67px">.580</td><td style="min-width:67px">.483</td></tr>
+<tr><th>题项2（5点李克特）</th><td>.567</td><td>.535</td></tr>
+<tr><th>题项3（5点李克特）</th><td>.576</td><td>.547</td></tr>
+<tr><th>题项4（5点李克特）</th><td>.609</td><td>.496</td></tr>
+<tr><th>题项5（5点李克特）</th><td>.586</td><td>.471</td></tr>
+<tr><th>题项6（5点李克特）</th><td>.541</td><td>.489</td></tr>
+<tr><th>题项7（5点李克特）</th><td>.641</td><td>-.479</td></tr>
+<tr><th>题项8（5点李克特）</th><td>.678</td><td>-.367</td></tr>
+<tr><th>题项9（5点李克特）</th><td>.657</td><td>-.442</td></tr>
+<tr><th>题项10（5点李克特）</th><td>.663</td><td>-.482</td></tr>
+<tr><th>题项11（5点李克特）</th><td>.637</td><td>-.481</td></tr>
+<tr><th>题项12（5点李克特）</th><td>.716</td><td>-.375</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Extraction Method: Principal Component Analysis.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,12,1,0" data-cols="1,2" data-heights="27,0,40,252,58" data-widths="139,273" data-curCounts="12,2" data-curSizess="12,2">
+<caption colspan="3">Rotated Component Matrix</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th>Component</th></tr>
+<tr><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,11,0,1">
+<tr><th style="min-width:139px">题项1（5点李克特）</th><td style="min-width:67px">.119</td><td style="min-width:67px">.745</td></tr>
+<tr><th>题项2（5点李克特）</th><td>.075</td><td>.776</td></tr>
+<tr><th>题项3（5点李克特）</th><td>.073</td><td>.791</td></tr>
+<tr><th>题项4（5点李克特）</th><td>.132</td><td>.774</td></tr>
+<tr><th>题项5（5点李克特）</th><td>.130</td><td>.740</td></tr>
+<tr><th>题项6（5点李克特）</th><td>.085</td><td>.724</td></tr>
+<tr><th>题项7（5点李克特）</th><td>.798</td><td>.062</td></tr>
+<tr><th>题项8（5点李克特）</th><td>.752</td><td>.170</td></tr>
+<tr><th>题项9（5点李克特）</th><td>.786</td><td>.100</td></tr>
+<tr><th>题项10（5点李克特）</th><td>.817</td><td>.074</td></tr>
+<tr><th>题项11（5点李克特）</th><td>.797</td><td>.057</td></tr>
+<tr><th>题项12（5点李克特）</th><td>.786</td><td>.190</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Extraction Method: Principal Component Analysis. <br> Rotation Method: Varimax with Kaiser Normalization.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,2,1,0" data-cols="1,2" data-heights="43,0,20,42,58" data-widths="85,219" data-curCounts="2,2" data-curSizess="2,2">
+<caption colspan="3">Component Transformation Matrix</caption>
+<thead>
+<tr><th class="cornerLabels">Component</th><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,1,0,1">
+<tr><th style="min-width:85px">1</th><td style="min-width:67px">.753</td><td style="min-width:67px">.658</td></tr>
+<tr><th>2</th><td>-.658</td><td>.753</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Extraction Method: Principal Component Analysis.  <br> Rotation Method: Varimax with Kaiser Normalization.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+</body>
+</html>

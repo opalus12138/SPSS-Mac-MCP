@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>D2_hierarchical_reg.html</title>
+<meta charset="utf-8"/>
+<style>
+.details {visibility:hidden;}
+.procedureTitle{color: #1d3649;font-weight: 600;font-size: 20px;line-height: 24px;margin-left: 32px;font-family: monospace;}
+.pivot{color:#264A60;background-color:#FFFFFF;font-family:sans-serif;font-size:9pt;font-weight:normal;}
+.pivot th{font-weight:normal;}
+.pivot caption{padding-top:1pt;color:#010205;font-weight:bold;padding-left:6pt;vertical-align:middle;font-size:11pt;padding-bottom:6pt;text-align:center;padding-right:8pt;}
+.layers{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:bottom;padding-bottom:3pt;text-align:left;padding-right:8pt;}
+.cornerLabels{padding-top:3pt;padding-left:6pt;vertical-align:bottom;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot thead th:not:(.cornerLabels){padding-top:2pt;padding-left:6pt;vertical-align:bottom;padding-bottom:2pt;text-align:center;padding-right:8pt;}
+.pivot tbody th{background-color:#E0E0E0;padding-top:3pt;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:left;padding-right:8pt;}
+.pivot tbody td{background-color:#F9F9FB;padding-top:3pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:right;padding-right:8pt;}
+.pivot tbody tr:nth-child(even) td{background-color:#F9F9FB;color:#010205;}
+.caption{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot tfoot tr td{padding-top:2pt;color:#010205;padding-left:18pt;vertical-align:top;padding-bottom:3pt;text-align:left;padding-right:18pt;}
+.titleLayerSeparator{border-top:1px none #152935;}
+.pivot tbody{border-top:1px none #152935;border-right:1px none #152935;border-left:1px none #152935;border-bottom:1px solid #152935;}
+.pivot tbody tr td:first-of-type{border-left:1px none #152935;}
+.pivot tbody tr:first-child td{border-top:1px solid #152935;}
+.pivot tbody tr + tr{border-top:1px solid #AEAEAE;}
+.hDR{border-top:1px none #AEAEAE;}
+.vCR{border-left:1px none #AEAEAE;}
+.vDR{border-left:1px none #AEAEAE;}
+.hCC{border-bottom:1px none #AEAEAE;}
+.hDC{border-bottom:1px none #AEAEAE;}
+.pivot thead th:not(:last-child), .pivot td:not(:last-child){border-right:1px solid #e0e0e0;}
+.vDC{border-right:1px none #AEAEAE;}
+.pivot{margin: 80px 40px 40px 80px;}
+.pivot thead.tr.th {padding:0px;border-spacing:0px}
+.hal{text-align:left} .hac{text-align:center} .har{text-align:right}
+.val{vertical-align:left} .vac{vertical-align:center} .var{vertical-align:right}
+</style>
+</head>
+<body>
+
+<div>
+<style>
+*{
+border-collapse:collapse;
+}
+.Default .title{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:bold;
+padding-left:6pt;
+vertical-align:middle;
+font-size:11pt;
+padding-bottom:6pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .layers{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .cornerLabels{
+background-color:#ffffff;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .columnLabels{
+background-color:#ffffff;
+padding-top:2pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .rowLabels{
+background-color:#e0e0e0;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .o, .Default .e{
+background-color:#f9f9fb;
+padding-top:3pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:right;
+padding-right:8pt;
+}
+.Default .o{
+background-color:null;
+color:null;
+}
+.Default .e{
+background-color:#f9f9fb;
+color:#010205;
+}
+.Default .caption{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .footnotes{
+background-color:#ffffff;
+padding-top:2pt;
+color:#010205;
+font-weight:normal;
+padding-left:18pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:18pt;
+}
+.Default .titleLayerSeparator{
+border-top:1px none #152935;
+}
+.Default .innerFrameBd{
+border-top:1px none #152935;
+border-right:1px none #152935;
+border-left:1px none #152935;
+border-bottom:1px solid #152935;
+}
+.Default .dataAreaLeft{
+border-left:1px none #152935;
+}
+.Default .dataAreaTop{
+border-top:1px solid #152935;
+}
+.Default .hCR{
+border-top:1px solid #aeaeae;
+}
+.Default .hDR{
+border-top:1px none #aeaeae;
+}
+.Default .vCR{
+border-left:1px none #aeaeae;
+}
+.Default .vDR{
+border-left:1px none #aeaeae;
+}
+.Default .hCC{
+border-bottom:1px none #aeaeae;
+}
+.Default .hDC{
+border-bottom:1px none #aeaeae;
+}
+.Default .vCC{
+border-right:1px solid #e0e0e0;
+}
+.Default .vDC{
+border-right:1px none #aeaeae;
+}
+</style>
+</div>
+<div class="itemBody">
+<table summary="Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 15 行的表" style="width:474px" class="Default PivotTable" aria-label="Notes" role="complementary" data-lookName="Default" data-rowLabelWidth="2" data-colLabelHeight="0" data-NumRows="14" data-NumCols="1" data-rowLabels="Corner" data-decimal-char="." data-col-labels="" data-row-labels="Output Created ;Comments ;Input Data; Filter; Weight; Split File; N of Rows in Working Data File;Missing Value Handling Definition of Missing; Cases Used;Syntax ;Resources Processor Time; Elapsed Time; Memory Required; Additional Memory Required for Residual Plots" data-layer-dimension="" data-column-dimension="" data-row-dimension="Contents;" data-maxColWidth="122">
+<caption class="title" style="width:474px">Notes<span class="details">Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 15 行的表</span></caption>
+<tbody class="PivotBody defaultLayer innerFrameBd">
+<tr>
+<th class="rowLabels dataAreaTop role3" colspan="2">Output Created</th>
+<td class=" o dataAreaTop dataAreaLeft">25-MAY-2026 19:49:11</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Comments</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&nbsp;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="5">Input</th>
+<th class="rowLabels hCR vCR role3">Data</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">/Users/opalus/Downloads/xianyu/2026/05/0525/5月25日_SPSS全功能验证/datasets/firm_panel.sav</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Filter</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Weight</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Split File</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">N of Rows in Working Data File</th>
+<td class=" o dataAreaLeft hCR">3000</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Missing Value Handling</th>
+<th class="rowLabels hCR vCR role3">Definition of Missing</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">User-defined missing values are treated as missing.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Cases Used</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">Statistics are based on cases with no missing values for any variable used.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Syntax</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">REGRESSION /STATISTICS COEFF OUTS R ANOVA CHANGE<br>  /DEPENDENT TQ<br>  /METHOD=ENTER Lev ROA Size<br>  /METHOD=ENTER DTI<br>  /METHOD=ENTER IP.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="4">Resources</th>
+<th class="rowLabels hCR vCR role3">Processor Time</th>
+<td class=" o dataAreaLeft hCR">00:00:00.04</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Elapsed Time</th>
+<td class=" e dataAreaLeft hCR">00:00:00.00</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Memory Required</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">5216 bytes</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Additional Memory Required for Residual Plots</th>
+<td class=" e dataAreaLeft hCR">25-MAY-2026 19:49:11</td>
+</tr>
+<tr>
+<td  style="width:152px;padding:0px;border-spacing:0px"></td>
+<td  style="width:160px;padding:0px;border-spacing:0px"></td>
+<td  style="width:162px;padding:0px;border-spacing:0px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,3,0,1" data-cols="1,3" data-heights="27,0,34,153,21" data-widths="54,313" data-curCounts="3,3" data-curSizess="3,3">
+<caption colspan="4">Variables Entered/Removed</caption>
+<thead>
+<tr><th class="cornerLabels">Model</th><th>Variables Entered</th><th>Variables Removed</th><th>Method</th></tr>
+</thead>
+<tbody data-rect="0,2,0,2">
+<tr><th style="min-width:54px">1</th><td class=" hal" style="min-width:96px" title="b. All requested variables entered.">企业规模（总资产对数）, 资产负债率, 总资产收益率<sup>b</sup></td><td style="min-width:96px">.</td><td class=" hal" style="min-width:67px">Enter</td></tr>
+<tr><th>2</th><td class=" hal" title="b. All requested variables entered.">数字化转型强度<sup>b</sup></td><td>.</td><td class=" hal">Enter</td></tr>
+<tr><th>3</th><td class=" hal" title="b. All requested variables entered.">创新绩效（专利对数）<sup>b</sup></td><td>.</td><td class=" hal">Enter</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="4">b.&nbsp;All requested variables entered.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,3,0,3" data-cols="1,9" data-heights="27,0,54,69,63" data-widths="54,782" data-curCounts="3,9" data-curSizess="3,9">
+<caption colspan="10">Model Summary</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">Model</th><th rowspan="2">R</th><th rowspan="2">R Square</th><th rowspan="2">Adjusted R Square</th><th rowspan="2">Std. Error of the Estimate</th><th colspan="4">Change Statistics</th></tr>
+<tr><th>R Square Change</th><th>F Change</th><th>df1</th><th>df2</th><th>Sig. F Change</th></tr>
+</thead>
+<tbody data-rect="0,2,0,8">
+<tr><th style="min-width:54px">1</th><td style="min-width:67px" title="a. Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率">.263<sup>a</sup></td><td style="min-width:71px">.069</td><td style="min-width:96px">.068</td><td style="min-width:96px">.69355</td><td style="min-width:96px">.069</td><td style="min-width:72px">74.461</td><td style="min-width:67px">3</td><td style="min-width:67px">2996</td><td style="min-width:96px">.000</td></tr>
+<tr><th>2</th><td title="b. Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度">.269<sup>b</sup></td><td>.072</td><td>.071</td><td>.69257</td><td>.003</td><td>9.500</td><td>1</td><td>2995</td><td>.002</td></tr>
+<tr><th>3</th><td title="c. Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度, 创新绩效（专利对数）">.280<sup>c</sup></td><td>.078</td><td>.077</td><td>.69043</td><td>.006</td><td>19.588</td><td>1</td><td>2994</td><td>.000</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="10">a.&nbsp;Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率</td></tr>
+<tr><td colspan="10">b.&nbsp;Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度</td></tr>
+<tr><td colspan="10">c.&nbsp;Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度, 创新绩效（专利对数）</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,9,0,3" data-cols="2,5" data-heights="27,0,34,195,91" data-widths="130,521" data-curCounts="9,5" data-curSizess="9,5">
+<caption colspan="7">ANOVA</caption>
+<thead>
+<tr><th class="cornerLabels" colspan="2">Model</th><th>Sum of Squares</th><th>df</th><th>Mean Square</th><th>F</th><th>Sig.</th></tr>
+</thead>
+<tbody data-rect="0,8,0,4">
+<tr><th rowspan="3" style="min-width:48px">1</th><th style="min-width:82px">Regression</th><td style="min-width:96px">107.450</td><td style="min-width:67px">3</td><td style="min-width:94px">35.817</td><td style="min-width:67px">74.461</td><td style="min-width:67px" title="b. Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率">.000<sup>b</sup></td></tr>
+<tr><th>Residual</th><td>1441.104</td><td>2996</td><td>.481</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>Total</th><td>1548.553</td><td>2999</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th rowspan="3">2</th><th>Regression</th><td>112.006</td><td>4</td><td>28.002</td><td>58.379</td><td title="c. Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度">.000<sup>c</sup></td></tr>
+<tr><th>Residual</th><td>1436.547</td><td>2995</td><td>.480</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>Total</th><td>1548.553</td><td>2999</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th rowspan="3">3</th><th>Regression</th><td>121.343</td><td>5</td><td>24.269</td><td>50.911</td><td title="d. Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度, 创新绩效（专利对数）">.000<sup>d</sup></td></tr>
+<tr><th>Residual</th><td>1427.210</td><td>2994</td><td>.477</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+<tr><th>Total</th><td>1548.553</td><td>2999</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="7">b.&nbsp;Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率</td></tr>
+<tr><td colspan="7">c.&nbsp;Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度</td></tr>
+<tr><td colspan="7">d.&nbsp;Predictors: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度, 创新绩效（专利对数）</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,15,0,0" data-cols="2,5" data-heights="27,0,54,315,0" data-widths="199,611" data-curCounts="15,5" data-curSizess="15,5">
+<caption colspan="7">Coefficients</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2" colspan="2">Model</th><th colspan="2">Unstandardized Coefficients</th><th>Standardized Coefficients</th><th rowspan="2">t</th><th rowspan="2">Sig.</th></tr>
+<tr><th>B</th><th>Std. Error</th><th>Beta</th></tr>
+</thead>
+<tbody data-rect="0,14,0,4">
+<tr><th rowspan="4" style="min-width:48px">1</th><th style="min-width:151px">(Constant)</th><td style="min-width:91px">5.170</td><td style="min-width:91px">.277</td><td class=" hal" style="min-width:96px">&nbsp;</td><td style="min-width:67px">18.648</td><td style="min-width:67px">.000</td></tr>
+<tr><th>资产负债率</th><td>-.192</td><td>.089</td><td>-.038</td><td>-2.170</td><td>.030</td></tr>
+<tr><th>总资产收益率</th><td>2.919</td><td>.215</td><td>.240</td><td>13.588</td><td>.000</td></tr>
+<tr><th>企业规模（总资产对数）</th><td>-.070</td><td>.012</td><td>-.099</td><td>-5.619</td><td>.000</td></tr>
+<tr><th rowspan="5">2</th><th>(Constant)</th><td>5.207</td><td>.277</td><td class=" hal">&nbsp;</td><td>18.790</td><td>.000</td></tr>
+<tr><th>资产负债率</th><td>-.170</td><td>.089</td><td>-.034</td><td>-1.917</td><td>.055</td></tr>
+<tr><th>总资产收益率</th><td>2.908</td><td>.215</td><td>.239</td><td>13.554</td><td>.000</td></tr>
+<tr><th>企业规模（总资产对数）</th><td>-.076</td><td>.013</td><td>-.107</td><td>-6.004</td><td>.000</td></tr>
+<tr><th>数字化转型强度</th><td>.044</td><td>.014</td><td>.055</td><td>3.082</td><td>.002</td></tr>
+<tr><th rowspan="6">3</th><th>(Constant)</th><td>5.404</td><td>.280</td><td class=" hal">&nbsp;</td><td>19.313</td><td>.000</td></tr>
+<tr><th>资产负债率</th><td>-.173</td><td>.089</td><td>-.034</td><td>-1.959</td><td>.050</td></tr>
+<tr><th>总资产收益率</th><td>2.888</td><td>.214</td><td>.237</td><td>13.498</td><td>.000</td></tr>
+<tr><th>企业规模（总资产对数）</th><td>-.088</td><td>.013</td><td>-.124</td><td>-6.844</td><td>.000</td></tr>
+<tr><th>数字化转型强度</th><td>.033</td><td>.014</td><td>.041</td><td>2.281</td><td>.023</td></tr>
+<tr><th>创新绩效（专利对数）</th><td>.082</td><td>.018</td><td>.081</td><td>4.426</td><td>.000</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,3,0,2" data-cols="2,5" data-heights="27,0,54,69,56" data-widths="187,580" data-curCounts="3,5" data-curSizess="3,5">
+<caption colspan="7">Excluded Variables</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2" colspan="2">Model</th><th rowspan="2">Beta In</th><th rowspan="2">t</th><th rowspan="2">Sig.</th><th rowspan="2">Partial Correlation</th><th>Collinearity Statistics</th></tr>
+<tr><th>Tolerance</th></tr>
+</thead>
+<tbody data-rect="0,2,0,4">
+<tr><th rowspan="2" style="min-width:48px">1</th><th style="min-width:139px">数字化转型强度</th><td style="min-width:67px" title="b. Predictors in the Model: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率">.055<sup>b</sup></td><td style="min-width:67px">3.082</td><td style="min-width:67px">.002</td><td style="min-width:96px">.056</td><td style="min-width:96px">.974</td></tr>
+<tr><th>创新绩效（专利对数）</th><td title="b. Predictors in the Model: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率">.088<sup>b</sup></td><td>4.890</td><td>.000</td><td>.089</td><td>.942</td></tr>
+<tr><th>2</th><th>创新绩效（专利对数）</th><td title="c. Predictors in the Model: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度">.081<sup>c</sup></td><td>4.426</td><td>.000</td><td>.081</td><td>.914</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="7">b.&nbsp;Predictors in the Model: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率</td></tr>
+<tr><td colspan="7">c.&nbsp;Predictors in the Model: (Constant), 企业规模（总资产对数）, 资产负债率, 总资产收益率, 数字化转型强度</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+</body>
+</html>

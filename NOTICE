@@ -1,0 +1,22 @@
+SPSS-Mac-MCP
+============
+
+Copyright (c) 2026 Juliet C.L.K. (opalus12138)
+
+This product includes software originally developed by SPSS-MCP Contributors
+(https://github.com/Exekiel179/SPSS-MCP), licensed under the MIT License.
+
+This project re-engineers the upstream SPSS-MCP for native macOS support:
+
+  * Adds macOS installation path detection (config.py)
+  * Adds DYLD_FALLBACK_LIBRARY_PATH handling to work around macOS SIP
+    restrictions on DYLD_LIBRARY_PATH (spss_engine.py)
+  * Adapts Python site-packages path resolution for SPSS macOS layout
+    (Resources/Python3/lib/python3.X/site-packages)
+  * Validates 23 SPSS analysis methods end-to-end on macOS
+
+Trademarks
+----------
+
+IBM® and SPSS® are trademarks of International Business Machines Corporation.
+This project is not affiliated with, endorsed by, or sponsored by IBM.

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Environment
+.env
+.env.local
+
+# SPSS 运行时产物
+*.spv.tmp
+spss_persistent_engine.py
+
+# 测试输出（保留 examples/full_validation 里的成果）
+/tmp/spss-mcp/

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>G3_discriminant.html</title>
+<meta charset="utf-8"/>
+<style>
+.details {visibility:hidden;}
+.procedureTitle{color: #1d3649;font-weight: 600;font-size: 20px;line-height: 24px;margin-left: 32px;font-family: monospace;}
+.pivot{color:#264A60;background-color:#FFFFFF;font-family:sans-serif;font-size:9pt;font-weight:normal;}
+.pivot th{font-weight:normal;}
+.pivot caption{padding-top:1pt;color:#010205;font-weight:bold;padding-left:6pt;vertical-align:middle;font-size:11pt;padding-bottom:6pt;text-align:center;padding-right:8pt;}
+.layers{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:bottom;padding-bottom:3pt;text-align:left;padding-right:8pt;}
+.cornerLabels{padding-top:3pt;padding-left:6pt;vertical-align:bottom;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot thead th:not:(.cornerLabels){padding-top:2pt;padding-left:6pt;vertical-align:bottom;padding-bottom:2pt;text-align:center;padding-right:8pt;}
+.pivot tbody th{background-color:#E0E0E0;padding-top:3pt;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:left;padding-right:8pt;}
+.pivot tbody td{background-color:#F9F9FB;padding-top:3pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:right;padding-right:8pt;}
+.pivot tbody tr:nth-child(even) td{background-color:#F9F9FB;color:#010205;}
+.caption{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot tfoot tr td{padding-top:2pt;color:#010205;padding-left:18pt;vertical-align:top;padding-bottom:3pt;text-align:left;padding-right:18pt;}
+.titleLayerSeparator{border-top:1px none #152935;}
+.pivot tbody{border-top:1px none #152935;border-right:1px none #152935;border-left:1px none #152935;border-bottom:1px solid #152935;}
+.pivot tbody tr td:first-of-type{border-left:1px none #152935;}
+.pivot tbody tr:first-child td{border-top:1px solid #152935;}
+.pivot tbody tr + tr{border-top:1px solid #AEAEAE;}
+.hDR{border-top:1px none #AEAEAE;}
+.vCR{border-left:1px none #AEAEAE;}
+.vDR{border-left:1px none #AEAEAE;}
+.hCC{border-bottom:1px none #AEAEAE;}
+.hDC{border-bottom:1px none #AEAEAE;}
+.pivot thead th:not(:last-child), .pivot td:not(:last-child){border-right:1px solid #e0e0e0;}
+.vDC{border-right:1px none #AEAEAE;}
+.pivot{margin: 80px 40px 40px 80px;}
+.pivot thead.tr.th {padding:0px;border-spacing:0px}
+.hal{text-align:left} .hac{text-align:center} .har{text-align:right}
+.val{vertical-align:left} .vac{vertical-align:center} .var{vertical-align:right}
+</style>
+</head>
+<body>
+
+<div>
+<style>
+*{
+border-collapse:collapse;
+}
+.Default .title{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:bold;
+padding-left:6pt;
+vertical-align:middle;
+font-size:11pt;
+padding-bottom:6pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .layers{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .cornerLabels{
+background-color:#ffffff;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .columnLabels{
+background-color:#ffffff;
+padding-top:2pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .rowLabels{
+background-color:#e0e0e0;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .o, .Default .e{
+background-color:#f9f9fb;
+padding-top:3pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:right;
+padding-right:8pt;
+}
+.Default .o{
+background-color:null;
+color:null;
+}
+.Default .e{
+background-color:#f9f9fb;
+color:#010205;
+}
+.Default .caption{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .footnotes{
+background-color:#ffffff;
+padding-top:2pt;
+color:#010205;
+font-weight:normal;
+padding-left:18pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:18pt;
+}
+.Default .titleLayerSeparator{
+border-top:1px none #152935;
+}
+.Default .innerFrameBd{
+border-top:1px none #152935;
+border-right:1px none #152935;
+border-left:1px none #152935;
+border-bottom:1px solid #152935;
+}
+.Default .dataAreaLeft{
+border-left:1px none #152935;
+}
+.Default .dataAreaTop{
+border-top:1px solid #152935;
+}
+.Default .hCR{
+border-top:1px solid #aeaeae;
+}
+.Default .hDR{
+border-top:1px none #aeaeae;
+}
+.Default .vCR{
+border-left:1px none #aeaeae;
+}
+.Default .vDR{
+border-left:1px none #aeaeae;
+}
+.Default .hCC{
+border-bottom:1px none #aeaeae;
+}
+.Default .hDC{
+border-bottom:1px none #aeaeae;
+}
+.Default .vCC{
+border-right:1px solid #e0e0e0;
+}
+.Default .vDC{
+border-right:1px none #aeaeae;
+}
+</style>
+</div>
+<div class="itemBody">
+<table summary="Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表" style="width:474px" class="Default PivotTable" aria-label="Notes" role="complementary" data-lookName="Default" data-rowLabelWidth="2" data-colLabelHeight="0" data-NumRows="12" data-NumCols="1" data-rowLabels="Corner" data-decimal-char="." data-col-labels="" data-row-labels="Output Created ;Comments ;Input Data; Filter; Weight; Split File; N of Rows in Working Data File;Missing Value Handling Definition of Missing; Cases Used;Syntax ;Resources Processor Time; Elapsed Time" data-layer-dimension="" data-column-dimension="" data-row-dimension="Contents;" data-maxColWidth="122">
+<caption class="title" style="width:474px">Notes<span class="details">Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表</span></caption>
+<tbody class="PivotBody defaultLayer innerFrameBd">
+<tr>
+<th class="rowLabels dataAreaTop role3" colspan="2">Output Created</th>
+<td class=" o dataAreaTop dataAreaLeft">25-MAY-2026 19:49:17</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Comments</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&nbsp;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="5">Input</th>
+<th class="rowLabels hCR vCR role3">Data</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">/Users/opalus/Downloads/xianyu/2026/05/0525/5月25日_SPSS全功能验证/datasets/cluster_survival.sav</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Filter</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Weight</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Split File</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">N of Rows in Working Data File</th>
+<td class=" o dataAreaLeft hCR">500</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Missing Value Handling</th>
+<th class="rowLabels hCR vCR role3">Definition of Missing</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">User-defined missing values are treated as missing in the analysis phase.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Cases Used</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">In the analysis phase, cases with no user- or system-missing values for any predictor variable are used. Cases with user-, system-missing, or out-of-range values for the grouping variable are always excluded.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Syntax</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">DISCRIMINANT /GROUPS=true_segment(0 2)<br>  /VARIABLES=x1_spend x2_freq x3_recency<br>  /ANALYSIS ALL<br>  /PRIORS EQUAL<br>  /STATISTICS=COEFF RAW BOXM TABLE<br>  /CLASSIFY=NONMISSING POOLED.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Resources</th>
+<th class="rowLabels hCR vCR role3">Processor Time</th>
+<td class=" o dataAreaLeft hCR">00:00:00.04</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Elapsed Time</th>
+<td class=" e dataAreaLeft hCR">25-MAY-2026 19:49:17</td>
+</tr>
+<tr>
+<td  style="width:152px;padding:0px;border-spacing:0px"></td>
+<td  style="width:160px;padding:0px;border-spacing:0px"></td>
+<td  style="width:162px;padding:0px;border-spacing:0px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,6,0,0" data-cols="2,2" data-heights="27,0,20,196,0" data-widths="232,366" data-curCounts="6,2" data-curSizess="6,2">
+<caption colspan="4">Analysis Case Processing Summary</caption>
+<thead>
+<tr><th class="cornerLabels" colspan="2">Unweighted Cases</th><th>N</th><th>Percent</th></tr>
+</thead>
+<tbody data-rect="0,5,0,1">
+<tr><th colspan="2">Valid</th><td style="min-width:67px">500</td><td style="min-width:67px">100.0</td></tr>
+<tr><th rowspan="4" style="min-width:72px">Excluded</th><th style="min-width:160px">Missing or out-of-range group codes</th><td>0</td><td>.0</td></tr>
+<tr><th>At least one missing discriminating variable</th><td>0</td><td>.0</td></tr>
+<tr><th>Both missing or out-of-range group codes and at least one missing discriminating variable</th><td>0</td><td>.0</td></tr>
+<tr><th>Total</th><td>0</td><td>.0</td></tr>
+<tr><th colspan="2">Total</th><td>500</td><td>100.0</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,12,0,0" data-cols="2,2" data-heights="27,0,40,252,0" data-widths="170,328" data-curCounts="12,2" data-curSizess="12,2">
+<caption colspan="4">Group Statistics</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2" colspan="2">真实分群（仅供对比）</th><th>Valid N (listwise)</th></tr>
+<tr><th>Unweighted</th><th>Weighted</th></tr>
+</thead>
+<tbody data-rect="0,11,0,1">
+<tr><th rowspan="3" style="min-width:79px">活跃低值</th><th style="min-width:91px">消费金额</th><td style="min-width:86px">197</td><td style="min-width:72px">197.000</td></tr>
+<tr><th>购买频次</th><td>197</td><td>197.000</td></tr>
+<tr><th>最近购买间隔</th><td>197</td><td>197.000</td></tr>
+<tr><th rowspan="3">中间稳定</th><th>消费金额</th><td>180</td><td>180.000</td></tr>
+<tr><th>购买频次</th><td>180</td><td>180.000</td></tr>
+<tr><th>最近购买间隔</th><td>180</td><td>180.000</td></tr>
+<tr><th rowspan="3">高频高价值</th><th>消费金额</th><td>123</td><td>123.000</td></tr>
+<tr><th>购买频次</th><td>123</td><td>123.000</td></tr>
+<tr><th>最近购买间隔</th><td>123</td><td>123.000</td></tr>
+<tr><th rowspan="3">Total</th><th>消费金额</th><td>500</td><td>500.000</td></tr>
+<tr><th>购买频次</th><td>500</td><td>500.000</td></tr>
+<tr><th>最近购买间隔</th><td>500</td><td>500.000</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,4,1,0" data-cols="1,2" data-heights="27,0,34,84,44" data-widths="142,305" data-curCounts="4,2" data-curSizess="4,2">
+<caption colspan="3">Log Determinants</caption>
+<thead>
+<tr><th class="cornerLabels">真实分群（仅供对比）</th><th>Rank</th><th>Log Determinant</th></tr>
+</thead>
+<tbody data-rect="0,3,0,1">
+<tr><th style="min-width:142px">活跃低值</th><td style="min-width:67px">3</td><td style="min-width:96px">9.405</td></tr>
+<tr><th>中间稳定</th><td>3</td><td>9.533</td></tr>
+<tr><th>高频高价值</th><td>3</td><td>9.877</td></tr>
+<tr><th>Pooled within-groups</th><td>3</td><td>9.586</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">The ranks and natural logarithms of determinants printed are those of the group covariance matrices.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,0,5,1,0" data-cols="2,1" data-heights="27,0,0,105,30" data-widths="114,209" data-curCounts="5,1" data-curSizess="5,1">
+<caption colspan="3">Test Results</caption>
+<thead>
+</thead>
+<tbody data-rect="0,4,0,0">
+<tr><th colspan="2">Box's M</th><td style="min-width:95px">9.754</td></tr>
+<tr><th rowspan="4" style="min-width:48px">F</th><th style="min-width:66px">Approx.</th><td>.805</td></tr>
+<tr><th>df1</th><td>12</td></tr>
+<tr><th>df2</th><td>834251.087</td></tr>
+<tr><th>Sig.</th><td>.645</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Tests null hypothesis of equal population covariance matrices.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,2,0,1" data-cols="1,4" data-heights="27,0,34,46,35" data-widths="66,432" data-curCounts="2,4" data-curSizess="2,4">
+<caption colspan="5">Eigenvalues</caption>
+<thead>
+<tr><th class="cornerLabels">Function</th><th>Eigenvalue</th><th>% of Variance</th><th>Cumulative %</th><th>Canonical Correlation</th></tr>
+</thead>
+<tbody data-rect="0,1,0,3">
+<tr><th style="min-width:66px">1</th><td style="min-width:80px" title="a. First 2 canonical discriminant functions were used in the analysis.">59.245<sup>a</sup></td><td style="min-width:96px">82.4</td><td style="min-width:94px">82.4</td><td style="min-width:96px">.992</td></tr>
+<tr><th>2</th><td title="a. First 2 canonical discriminant functions were used in the analysis.">12.681<sup>a</sup></td><td>17.6</td><td>100.0</td><td>.963</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="5">a.&nbsp;First 2 canonical discriminant functions were used in the analysis.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,2,0,0" data-cols="1,4" data-heights="27,0,34,42,0" data-widths="124,438" data-curCounts="2,4" data-curSizess="2,4">
+<caption colspan="5">Wilks' Lambda</caption>
+<thead>
+<tr><th class="cornerLabels">Test of Function(s)</th><th>Wilks' Lambda</th><th>Chi-square</th><th>df</th><th>Sig.</th></tr>
+</thead>
+<tbody data-rect="0,1,0,3">
+<tr><th style="min-width:124px">1 through 2</th><td style="min-width:96px">.001</td><td style="min-width:84px">3330.352</td><td style="min-width:67px">6</td><td style="min-width:67px">.000</td></tr>
+<tr><th>2</th><td>.073</td><td>1297.533</td><td>2</td><td>.000</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,3,0,0" data-cols="1,2" data-heights="60,0,40,63,0" data-widths="91,225" data-curCounts="3,2" data-curSizess="3,2">
+<caption colspan="3">Standardized Canonical Discriminant Function Coefficients</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th>Function</th></tr>
+<tr><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,2,0,1">
+<tr><th style="min-width:91px">消费金额</th><td style="min-width:67px">.741</td><td style="min-width:67px">.110</td></tr>
+<tr><th>购买频次</th><td>.667</td><td>-.359</td></tr>
+<tr><th>最近购买间隔</th><td>.075</td><td>.944</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,3,1,1" data-cols="1,2" data-heights="27,0,40,69,135" data-widths="91,225" data-curCounts="3,2" data-curSizess="3,2">
+<caption colspan="3">Structure Matrix</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th>Function</th></tr>
+<tr><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,2,0,1">
+<tr><th style="min-width:91px">消费金额</th><td style="min-width:67px" title="*. Largest absolute correlation between each variable and any discriminant function">.737<sup>*</sup></td><td style="min-width:67px">.173</td></tr>
+<tr><th>购买频次</th><td title="*. Largest absolute correlation between each variable and any discriminant function">.662<sup>*</sup></td><td>-.297</td></tr>
+<tr><th>最近购买间隔</th><td>.166</td><td title="*. Largest absolute correlation between each variable and any discriminant function">.926<sup>*</sup></td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Pooled within-groups correlations between discriminating variables and standardized canonical discriminant functions <br> Variables ordered by absolute size of correlation within function.</td></tr>
+<tr><td colspan="3">*.&nbsp;Largest absolute correlation between each variable and any discriminant function</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,4,1,0" data-cols="1,2" data-heights="43,0,40,84,16" data-widths="91,228" data-curCounts="4,2" data-curSizess="4,2">
+<caption colspan="3">Canonical Discriminant Function Coefficients</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th>Function</th></tr>
+<tr><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,3,0,1">
+<tr><th style="min-width:91px">消费金额</th><td style="min-width:70px">.149</td><td style="min-width:67px">.022</td></tr>
+<tr><th>购买频次</th><td>.136</td><td>-.073</td></tr>
+<tr><th>最近购买间隔</th><td>.015</td><td>.190</td></tr>
+<tr><th>(Constant)</th><td>-10.573</td><td>-5.886</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Unstandardized coefficients</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,3,1,0" data-cols="1,2" data-heights="27,0,40,63,30" data-widths="139,273" data-curCounts="3,2" data-curSizess="3,2">
+<caption colspan="3">Functions at Group Centroids</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">真实分群（仅供对比）</th><th>Function</th></tr>
+<tr><th>1</th><th>2</th></tr>
+</thead>
+<tbody data-rect="0,2,0,1">
+<tr><th style="min-width:139px">活跃低值</th><td style="min-width:67px">-8.235</td><td style="min-width:67px">-2.207</td></tr>
+<tr><th>中间稳定</th><td>1.270</td><td>4.697</td></tr>
+<tr><th>高频高价值</th><td>11.331</td><td>-3.339</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="3">Unstandardized canonical discriminant functions evaluated at group means</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,0,4,0,0" data-cols="2,1" data-heights="27,0,0,112,0" data-widths="232,299" data-curCounts="4,1" data-curSizess="4,1">
+<caption colspan="3">Classification Processing Summary</caption>
+<thead>
+</thead>
+<tbody data-rect="0,3,0,0">
+<tr><th colspan="2">Processed</th><td style="min-width:67px">500</td></tr>
+<tr><th rowspan="2" style="min-width:72px">Excluded</th><th style="min-width:160px">Missing or out-of-range group codes</th><td>0</td></tr>
+<tr><th>At least one missing discriminating variable</th><td>0</td></tr>
+<tr><th colspan="2">Used in Output</th><td>500</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,4,0,0" data-cols="1,3" data-heights="27,0,40,84,0" data-widths="139,367" data-curCounts="4,3" data-curSizess="4,3">
+<caption colspan="4">Prior Probabilities for Groups</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">真实分群（仅供对比）</th><th rowspan="2">Prior</th><th>Cases Used in Analysis</th></tr>
+<tr><th>Unweighted</th><th>Weighted</th></tr>
+</thead>
+<tbody data-rect="0,3,0,2">
+<tr><th style="min-width:139px">活跃低值</th><td style="min-width:67px">.333</td><td style="min-width:86px">197</td><td style="min-width:75px">197.000</td></tr>
+<tr><th>中间稳定</th><td>.333</td><td>180</td><td>180.000</td></tr>
+<tr><th>高频高价值</th><td>.333</td><td>123</td><td>123.000</td></tr>
+<tr><th>Total</th><td>1.000</td><td>500</td><td>500.000</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,4,1,0" data-cols="1,3" data-heights="27,0,40,84,16" data-widths="91,318" data-curCounts="4,3" data-curSizess="4,3">
+<caption colspan="4">Classification Function Coefficients</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">&nbsp;</th><th colspan="2">真实分群（仅供对比）</th></tr>
+<tr><th>活跃低值</th><th>中间稳定</th><th>高频高价值</th></tr>
+</thead>
+<tbody data-rect="0,3,0,2">
+<tr><th style="min-width:91px">消费金额</th><td style="min-width:70px">.330</td><td style="min-width:78px">1.895</td><td style="min-width:79px">3.213</td></tr>
+<tr><th>购买频次</th><td>.148</td><td>.938</td><td>2.901</td></tr>
+<tr><th>最近购买间隔</th><td>.783</td><td>2.236</td><td>.863</td></tr>
+<tr><th>(Constant)</th><td>-10.872</td><td>-127.504</td><td>-244.516</td></tr>
+</tbody>
+<tfoot>
+<tr><td class="caption" colspan="4">Fisher's linear discriminant functions</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,6,0,0" data-cols="3,4" data-heights="27,0,40,126,0" data-widths="254,534" data-curCounts="6,4" data-curSizess="6,4">
+<caption colspan="7">Classification Results</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2">真实分群（仅供对比）</th><th colspan="3">Predicted Group Membership</th><th rowspan="2">Total</th></tr>
+<tr><th>活跃低值</th><th>中间稳定</th><th>高频高价值</th></tr>
+</thead>
+<tbody data-rect="0,5,0,3">
+<tr><th rowspan="6" style="min-width:63px">Original</th><th rowspan="3" style="min-width:52px">Count</th><th style="min-width:139px">活跃低值</th><td style="min-width:67px">197</td><td style="min-width:67px">0</td><td style="min-width:79px">0</td><td style="min-width:67px">197</td></tr>
+<tr><th>中间稳定</th><td>0</td><td>180</td><td>0</td><td>180</td></tr>
+<tr><th>高频高价值</th><td>0</td><td>0</td><td>123</td><td>123</td></tr>
+<tr><th rowspan="3">%</th><th>活跃低值</th><td>100.0</td><td>.0</td><td>.0</td><td>100.0</td></tr>
+<tr><th>中间稳定</th><td>.0</td><td>100.0</td><td>.0</td><td>100.0</td></tr>
+<tr><th>高频高价值</th><td>.0</td><td>.0</td><td>100.0</td><td>100.0</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>

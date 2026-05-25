@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>C1_indep_ttest.html</title>
+<meta charset="utf-8"/>
+<style>
+.details {visibility:hidden;}
+.procedureTitle{color: #1d3649;font-weight: 600;font-size: 20px;line-height: 24px;margin-left: 32px;font-family: monospace;}
+.pivot{color:#264A60;background-color:#FFFFFF;font-family:sans-serif;font-size:9pt;font-weight:normal;}
+.pivot th{font-weight:normal;}
+.pivot caption{padding-top:1pt;color:#010205;font-weight:bold;padding-left:6pt;vertical-align:middle;font-size:11pt;padding-bottom:6pt;text-align:center;padding-right:8pt;}
+.layers{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:bottom;padding-bottom:3pt;text-align:left;padding-right:8pt;}
+.cornerLabels{padding-top:3pt;padding-left:6pt;vertical-align:bottom;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot thead th:not:(.cornerLabels){padding-top:2pt;padding-left:6pt;vertical-align:bottom;padding-bottom:2pt;text-align:center;padding-right:8pt;}
+.pivot tbody th{background-color:#E0E0E0;padding-top:3pt;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:left;padding-right:8pt;}
+.pivot tbody td{background-color:#F9F9FB;padding-top:3pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:2pt;text-align:right;padding-right:8pt;}
+.pivot tbody tr:nth-child(even) td{background-color:#F9F9FB;color:#010205;}
+.caption{padding-top:1pt;color:#010205;padding-left:6pt;vertical-align:top;padding-bottom:1pt;text-align:left;padding-right:8pt;}
+.pivot tfoot tr td{padding-top:2pt;color:#010205;padding-left:18pt;vertical-align:top;padding-bottom:3pt;text-align:left;padding-right:18pt;}
+.titleLayerSeparator{border-top:1px none #152935;}
+.pivot tbody{border-top:1px none #152935;border-right:1px none #152935;border-left:1px none #152935;border-bottom:1px solid #152935;}
+.pivot tbody tr td:first-of-type{border-left:1px none #152935;}
+.pivot tbody tr:first-child td{border-top:1px solid #152935;}
+.pivot tbody tr + tr{border-top:1px solid #AEAEAE;}
+.hDR{border-top:1px none #AEAEAE;}
+.vCR{border-left:1px none #AEAEAE;}
+.vDR{border-left:1px none #AEAEAE;}
+.hCC{border-bottom:1px none #AEAEAE;}
+.hDC{border-bottom:1px none #AEAEAE;}
+.pivot thead th:not(:last-child), .pivot td:not(:last-child){border-right:1px solid #e0e0e0;}
+.vDC{border-right:1px none #AEAEAE;}
+.pivot{margin: 80px 40px 40px 80px;}
+.pivot thead.tr.th {padding:0px;border-spacing:0px}
+.hal{text-align:left} .hac{text-align:center} .har{text-align:right}
+.val{vertical-align:left} .vac{vertical-align:center} .var{vertical-align:right}
+</style>
+</head>
+<body>
+
+<div>
+<style>
+*{
+border-collapse:collapse;
+}
+.Default .title{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:bold;
+padding-left:6pt;
+vertical-align:middle;
+font-size:11pt;
+padding-bottom:6pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .layers{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .cornerLabels{
+background-color:#ffffff;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .columnLabels{
+background-color:#ffffff;
+padding-top:2pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:bottom;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:center;
+padding-right:8pt;
+}
+.Default .rowLabels{
+background-color:#e0e0e0;
+padding-top:3pt;
+color:#264a60;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .o, .Default .e{
+background-color:#f9f9fb;
+padding-top:3pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:2pt;
+font-family:sans-serif;
+text-align:right;
+padding-right:8pt;
+}
+.Default .o{
+background-color:null;
+color:null;
+}
+.Default .e{
+background-color:#f9f9fb;
+color:#010205;
+}
+.Default .caption{
+background-color:#ffffff;
+padding-top:1pt;
+color:#010205;
+font-weight:normal;
+padding-left:6pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:1pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:8pt;
+}
+.Default .footnotes{
+background-color:#ffffff;
+padding-top:2pt;
+color:#010205;
+font-weight:normal;
+padding-left:18pt;
+vertical-align:top;
+font-size:9pt;
+padding-bottom:3pt;
+font-family:sans-serif;
+text-align:left;
+padding-right:18pt;
+}
+.Default .titleLayerSeparator{
+border-top:1px none #152935;
+}
+.Default .innerFrameBd{
+border-top:1px none #152935;
+border-right:1px none #152935;
+border-left:1px none #152935;
+border-bottom:1px solid #152935;
+}
+.Default .dataAreaLeft{
+border-left:1px none #152935;
+}
+.Default .dataAreaTop{
+border-top:1px solid #152935;
+}
+.Default .hCR{
+border-top:1px solid #aeaeae;
+}
+.Default .hDR{
+border-top:1px none #aeaeae;
+}
+.Default .vCR{
+border-left:1px none #aeaeae;
+}
+.Default .vDR{
+border-left:1px none #aeaeae;
+}
+.Default .hCC{
+border-bottom:1px none #aeaeae;
+}
+.Default .hDC{
+border-bottom:1px none #aeaeae;
+}
+.Default .vCC{
+border-right:1px solid #e0e0e0;
+}
+.Default .vDC{
+border-right:1px none #aeaeae;
+}
+</style>
+</div>
+<div class="itemBody">
+<table summary="Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表" style="width:474px" class="Default PivotTable" aria-label="Notes" role="complementary" data-lookName="Default" data-rowLabelWidth="2" data-colLabelHeight="0" data-NumRows="12" data-NumCols="1" data-rowLabels="Corner" data-decimal-char="." data-col-labels="" data-row-labels="Output Created ;Comments ;Input Data; Filter; Weight; Split File; N of Rows in Working Data File;Missing Value Handling Definition of Missing; Cases Used;Syntax ;Resources Processor Time; Elapsed Time" data-layer-dimension="" data-column-dimension="" data-row-dimension="Contents;" data-maxColWidth="122">
+<caption class="title" style="width:474px">Notes<span class="details">Notes, 表, 0 个级别的列标题和 2 个级别的行标题, 包含 3 列 13 行的表</span></caption>
+<tbody class="PivotBody defaultLayer innerFrameBd">
+<tr>
+<th class="rowLabels dataAreaTop role3" colspan="2">Output Created</th>
+<td class=" o dataAreaTop dataAreaLeft">25-MAY-2026 19:49:08</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Comments</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&nbsp;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="5">Input</th>
+<th class="rowLabels hCR vCR role3">Data</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">/Users/opalus/Downloads/xianyu/2026/05/0525/5月25日_SPSS全功能验证/datasets/survey_likert.sav</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Filter</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Weight</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Split File</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">&lt;none&gt;</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">N of Rows in Working Data File</th>
+<td class=" o dataAreaLeft hCR">400</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Missing Value Handling</th>
+<th class="rowLabels hCR vCR role3">Definition of Missing</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">User defined missing values are treated as missing.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Cases Used</th>
+<td class=" o dataAreaLeft hCR" style="text-align:left;">Statistics for each analysis are based on the cases with no missing or out-of-range data for any variable in the analysis.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role3" colspan="2">Syntax</th>
+<td class=" e dataAreaLeft hCR" style="text-align:left;">T-TEST GROUPS=gender(0 1) /VARIABLES=total Q1 Q2.</td>
+</tr>
+<tr>
+<th class="rowLabels hCR role2" rowspan="2">Resources</th>
+<th class="rowLabels hCR vCR role3">Processor Time</th>
+<td class=" o dataAreaLeft hCR">00:00:00.03</td>
+</tr>
+<tr>
+<th class="rowLabels hCR vCR role3">Elapsed Time</th>
+<td class=" e dataAreaLeft hCR">25-MAY-2026 19:49:08</td>
+</tr>
+<tr>
+<td  style="width:152px;padding:0px;border-spacing:0px"></td>
+<td  style="width:160px;padding:0px;border-spacing:0px"></td>
+<td  style="width:162px;padding:0px;border-spacing:0px"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,1,6,0,0" data-cols="2,4" data-heights="27,0,34,126,0" data-widths="179,509" data-curCounts="6,4" data-curSizess="6,4">
+<caption colspan="6">Group Statistics</caption>
+<thead>
+<tr><th class="cornerLabels">性别</th><th>N</th><th>Mean</th><th>Std. Deviation</th><th>Std. Error Mean</th></tr>
+</thead>
+<tbody data-rect="0,5,0,3">
+<tr><th rowspan="2" style="min-width:131px">总分</th><th style="min-width:48px">男</th><td style="min-width:67px">196</td><td style="min-width:71px">36.9817</td><td style="min-width:96px">7.69200</td><td style="min-width:96px">.54943</td></tr>
+<tr><th>女</th><td>204</td><td>37.5865</td><td>7.38012</td><td>.51671</td></tr>
+<tr><th rowspan="2">题项1（5点李克特）</th><th>男</th><td>196</td><td>3.0765</td><td>.79049</td><td>.05646</td></tr>
+<tr><th>女</th><td>204</td><td>3.0245</td><td>.85061</td><td>.05955</td></tr>
+<tr><th rowspan="2">题项2（5点李克特）</th><th>男</th><td>196</td><td>3.0867</td><td>.86388</td><td>.06171</td></tr>
+<tr><th>女</th><td>204</td><td>2.9461</td><td>1.04671</td><td>.07328</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,3,6,0,0" data-cols="2,9" data-heights="27,0,88,210,0" data-widths="291,1101" data-curCounts="6,9" data-curSizess="6,9">
+<caption colspan="11">Independent Samples Test</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="3" colspan="2">&nbsp;</th><th colspan="2">Levene's Test for Equality of Variances</th><th colspan="6">t-test for Equality of Means</th></tr>
+<tr><th rowspan="2">F</th><th rowspan="2">Sig.</th><th rowspan="2">t</th><th rowspan="2">df</th><th rowspan="2">Sig. (2-tailed)</th><th rowspan="2">Mean Difference</th><th rowspan="2">Std. Error Difference</th><th>95% Confidence Interval of the Difference</th></tr>
+<tr><th>Lower</th><th>Upper</th></tr>
+</thead>
+<tbody data-rect="0,5,0,8">
+<tr><th rowspan="2" style="min-width:131px">总分</th><th style="min-width:160px">Equal variances assumed</th><td style="min-width:96px">.418</td><td style="min-width:96px">.518</td><td style="min-width:67px">-.803</td><td style="min-width:71px">398</td><td style="min-width:96px">.423</td><td style="min-width:96px">-.60478</td><td style="min-width:96px">.75360</td><td style="min-width:96px">-2.08632</td><td style="min-width:96px">.87677</td></tr>
+<tr><th>Equal variances not assumed</th><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td>-.802</td><td>395.378</td><td>.423</td><td>-.60478</td><td>.75423</td><td>-2.08758</td><td>.87803</td></tr>
+<tr><th rowspan="2">题项1（5点李克特）</th><th>Equal variances assumed</th><td>.014</td><td>.905</td><td>.633</td><td>398</td><td>.527</td><td>.05202</td><td>.08219</td><td>-.10955</td><td>.21360</td></tr>
+<tr><th>Equal variances not assumed</th><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td>.634</td><td>397.563</td><td>.527</td><td>.05202</td><td>.08207</td><td>-.10932</td><td>.21336</td></tr>
+<tr><th rowspan="2">题项2（5点李克特）</th><th>Equal variances assumed</th><td>6.288</td><td>.013</td><td>1.463</td><td>398</td><td>.144</td><td>.14066</td><td>.09617</td><td>-.04840</td><td>.32972</td></tr>
+<tr><th>Equal variances not assumed</th><td class=" hal">&nbsp;</td><td class=" hal">&nbsp;</td><td>1.468</td><td>389.216</td><td>.143</td><td>.14066</td><td>.09580</td><td>-.04770</td><td>.32901</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<table class="pivot" data-rows="1,0,2,9,0,1" data-cols="2,4" data-heights="27,0,40,189,63" data-widths="258,608" data-curCounts="9,4" data-curSizess="9,4">
+<caption colspan="6">Independent Samples Effect Sizes</caption>
+<thead>
+<tr><th class="cornerLabels" rowspan="2" colspan="2">&nbsp;</th><th rowspan="2" title="a. The denominator used in estimating the effect sizes. 
+Cohen's d uses the pooled standard deviation. 
+Hedges' correction uses the pooled standard deviation, plus a correction factor. 
+Glass's delta uses the sample standard deviation of the control group.">Standardizer<sup>a</sup></th><th rowspan="2">Point Estimate</th><th>95% Confidence Interval</th></tr>
+<tr><th>Lower</th><th>Upper</th></tr>
+</thead>
+<tbody data-rect="0,8,0,3">
+<tr><th rowspan="3" style="min-width:131px">总分</th><th style="min-width:127px">Cohen's d</th><td style="min-width:96px">7.53454</td><td style="min-width:96px">-.080</td><td style="min-width:79px">-.276</td><td style="min-width:79px">.116</td></tr>
+<tr><th>Hedges' correction</th><td>7.54877</td><td>-.080</td><td>-.276</td><td>.116</td></tr>
+<tr><th>Glass's delta</th><td>7.38012</td><td>-.082</td><td>-.278</td><td>.114</td></tr>
+<tr><th rowspan="3">题项1（5点李克特）</th><th>Cohen's d</th><td>.82171</td><td>.063</td><td>-.133</td><td>.259</td></tr>
+<tr><th>Hedges' correction</th><td>.82326</td><td>.063</td><td>-.133</td><td>.259</td></tr>
+<tr><th>Glass's delta</th><td>.85061</td><td>.061</td><td>-.135</td><td>.257</td></tr>
+<tr><th rowspan="3">题项2（5点李克特）</th><th>Cohen's d</th><td>.96148</td><td>.146</td><td>-.050</td><td>.342</td></tr>
+<tr><th>Hedges' correction</th><td>.96330</td><td>.146</td><td>-.050</td><td>.342</td></tr>
+<tr><th>Glass's delta</th><td>1.04671</td><td>.134</td><td>-.062</td><td>.331</td></tr>
+</tbody>
+<tfoot>
+<tr><td colspan="6">a.&nbsp;The denominator used in estimating the effect sizes. 
+Cohen's d uses the pooled standard deviation. 
+Hedges' correction uses the pooled standard deviation, plus a correction factor. 
+Glass's delta uses the sample standard deviation of the control group.</td></tr>
+</tfoot>
+</table>
+</div>
+</div>
+</body>
+</html>

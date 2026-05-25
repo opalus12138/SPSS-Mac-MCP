@@ -1,0 +1,67 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "spss-mac-mcp"
+dynamic = ["version"]
+description = "Model Context Protocol server for IBM SPSS Statistics on macOS — give AI assistants direct access to real SPSS analysis"
+readme = "README.md"
+authors = [
+    { name = "Juliet C.L.K. (opalus12138)", email = "Julietclk@techie.com" },
+]
+license = { text = "MIT" }
+requires-python = ">=3.10"
+keywords = ["spss", "mcp", "model-context-protocol", "statistics", "macos", "claude", "ai"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Intended Audience :: Science/Research",
+]
+dependencies = [
+    "mcp>=1.2.0",
+    "fastmcp>=2.14.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "pyreadstat>=1.2.0",
+    "pandas>=2.0.0",
+    "tabulate>=0.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/opalus12138/SPSS-Mac-MCP"
+Repository = "https://github.com/opalus12138/SPSS-Mac-MCP"
+Issues = "https://github.com/opalus12138/SPSS-Mac-MCP/issues"
+Documentation = "https://github.com/opalus12138/SPSS-Mac-MCP#readme"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.23.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+]
+
+[project.scripts]
+spss-mac-mcp = "spss_mac_mcp.cli:main"
+
+[tool.hatch.version]
+path = "src/spss_mac_mcp/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/spss_mac_mcp"]
+
+[tool.black]
+line-length = 88
+target-version = ["py310"]
+
+[tool.isort]
+profile = "black"

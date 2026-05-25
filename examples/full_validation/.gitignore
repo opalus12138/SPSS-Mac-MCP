@@ -1,0 +1,4 @@
+# 巨型 K-Means OXML 可能 145KB，但都属可重现产物
+# 保留 SPV/HTML 作为成品演示
+# 取消下一行注释即可不推 OXML 节省仓库体积
+# output/
