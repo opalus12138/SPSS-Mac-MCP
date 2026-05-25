@@ -616,7 +616,7 @@ def build_process_syntax(
     *,
     y: str,
     x: str,
-    m: str | list[str] | None = None,
+    m: list[str] | str | None = None,
     w: str | None = None,
     z: str | None = None,
     model: int = 4,
@@ -632,23 +632,31 @@ def build_process_syntax(
     """构造 PROCESS macro 调用语法。
 
     PROCESS by Andrew F. Hayes (https://www.processmacro.org).
-    要先 INSERT FILE 把 process.sps 加载到当前 SPSS 会话。
+
+    .. important::
+       必须用 ``INSERT FILE=``，**不能用** ``INCLUDE FILE=``。
+       INCLUDE 命令在 SPSS 中按 80 字符截断长行，会破坏 PROCESS 内部
+       MATRIX ... END MATRIX 块，产生 #12302 Error。
+       本函数始终生成 INSERT 命令，调用者无需考虑这个细节。
 
     常用模型：
-      Model 1   单调节
-      Model 4   简单中介（最常用）
-      Model 6   链式中介
-      Model 7   第一阶段被调节的中介
-      Model 14  第二阶段被调节的中介
-      Model 58  双阶段被调节的中介
+      Model 1   单调节            X × W → Y
+      Model 4   简单中介          X → M → Y  （最常用）
+      Model 6   链式中介          X → M1 → M2 → Y
+      Model 7   第一阶段被调节中介 (X × W) → M → Y
+      Model 14  第二阶段被调节中介 X → (M × W) → Y
+      Model 58  双阶段被调节中介   (X × W) → (M × W) → Y
+
+    参数 m 可以是 list[str]（推荐，多中介用 ``["IP", "Size"]``）
+    或 str（单中介 ``"IP"``，向后兼容）。
     """
-    # M 可以是单变量或多变量（链式中介）
+    # M 可以是单变量字符串或多变量 list（链式中介）
     if m is None:
         m_str = ""
-    elif isinstance(m, list):
+    elif isinstance(m, (list, tuple)):
         m_str = " ".join(m)
     else:
-        m_str = m
+        m_str = str(m)
 
     parts = [f"PROCESS y={y} /x={x}"]
     if m_str:

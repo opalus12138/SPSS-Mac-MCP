@@ -171,6 +171,68 @@ Claude 会自动：
 
 ---
 
+## 🧠 PROCESS Macro Integration
+
+集成 Andrew Hayes 的 **PROCESS v4.1**，覆盖 6 大常用模型（已端到端验证，见 [`examples/process_models/`](examples/process_models/)）。
+
+### 用法
+
+```python
+# 通过 MCP 工具
+spss_run_process(
+    file_path="data.sav",
+    y="TQ", x="DTI", m=["IP"],           # 注意：m 必须是列表
+    model=4, bootstrap=5000, seed=20260525,
+)
+```
+
+或者用自然语言：
+
+```
+"用 PROCESS Model 4 跑 firm_panel.sav 的 DTI → IP → TQ 中介，
+ bootstrap 5000 次，标准化系数"
+```
+
+### ⚠️ FAQ: 常见错误
+
+#### 错误 1：`MATRIX Error #12302` 或 PROCESS 解析失败
+
+**症状**：直接用 `spss_run_syntax` 自己写 PROCESS 调用语法时报错。
+
+**根因**：用了错误的 SPSS 命令 `INCLUDE FILE='...'.`
+
+**正确做法**：
+
+```spss
+INSERT FILE='/path/to/process.sps'.        ← ✅ 用 INSERT
+PROCESS y=Y /x=X /m=M /model=4 /boot=5000.
+
+# 而不是：
+INCLUDE FILE='/path/to/process.sps'.       ← ❌ 不能用 INCLUDE
+```
+
+为什么？`INCLUDE` 是 SPSS 老命令，对长行有 80 字符截断，会破坏 PROCESS 内部的 `MATRIX ... END MATRIX` 块。Andrew Hayes 官方文档明确要求用 `INSERT`。
+
+如果你用本项目的 `spss_run_process` 工具，**已经自动用 INSERT**，不用操心这个。
+
+#### 错误 2：调用 `spss_run_process` 报 "Missing required argument"
+
+**症状**：参数明明传了，但报缺 `file_path / y / x`。
+
+**根因**：早期版本（≤ v0.1.x）的 schema 用了过于宽松的类型（`object`、空 `list/dict`），客户端 XML 序列化器会把整个 dict 渲染成空。
+
+**修复**：v0.2.0+ 已经把 `m` 改成明确的 `List[str]`，`covariates` 为 `List[str]`，`extra_options` 为 `Dict[str, str]`。升级即可。
+
+#### 错误 3：输出超大（900KB+）超过 LLM 上下文
+
+**症状**：PROCESS 跑完后输出几百 KB 的源码 echo，把 LLM 上下文塞爆。
+
+**根因**：PROCESS 用 `MATRIX` 引擎，源码会被完整 echo。`SET PRINTBACK=OFF` 在 XD 模式下无效。
+
+**修复**：v0.2.0+ 内置 `extract_process_results()` 后处理，自动定位最后一次"PROCESS Procedure"banner，把输出从 ~937 KB 压到 ~3 KB（99.7% 压缩）。
+
+---
+
 ## 🙏 Acknowledgments
 
 This project is derived from [SPSS-MCP](https://github.com/Exekiel179/SPSS-MCP) by Exekiel179 (MIT licensed).

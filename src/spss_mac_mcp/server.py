@@ -5,7 +5,7 @@ SPSS MCP server — all tool definitions.
 import sys
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Dict, List, Literal, Optional
 
 from fastmcp import Context, FastMCP
 
@@ -526,7 +526,9 @@ async def spss_run_syntax(
         "Run Andrew Hayes' PROCESS macro (v4.1) for mediation, moderation, and "
         "conditional process analysis. Common models: 1 (moderation), 4 (simple "
         "mediation), 6 (serial mediation), 7 (first-stage moderated mediation), "
-        "14 (second-stage moderated mediation). "
+        "14 (second-stage moderated mediation), 58 (both-stages moderated mediation). "
+        "Pass mediator names as a list, e.g. m=['IP'] for simple mediation or "
+        "m=['IP', 'Size'] for serial mediation. "
         "Requires PROCESS macro installed (set PROCESS_MACRO_PATH or place under "
         "~/Downloads). Requires IBM SPSS Statistics to be installed."
     ),
@@ -535,7 +537,7 @@ async def spss_run_process(
     file_path: str,
     y: str,
     x: str,
-    m: Optional[object] = None,
+    m: Optional[List[str]] = None,
     w: Optional[str] = None,
     z: Optional[str] = None,
     model: int = 4,
@@ -543,11 +545,11 @@ async def spss_run_process(
     seed: Optional[int] = None,
     total: bool = True,
     standardized: bool = False,
-    covariates: Optional[list] = None,
+    covariates: Optional[List[str]] = None,
     cluster: Optional[str] = None,
     confidence: int = 95,
     process_macro_path: Optional[str] = None,
-    extra_options: Optional[dict] = None,
+    extra_options: Optional[Dict[str, str]] = None,
     ctx: Context = None,
 ) -> str:
     try:
