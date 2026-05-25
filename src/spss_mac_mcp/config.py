@@ -239,6 +239,45 @@ def get_results_dir() -> Path:
     return out_dir
 
 
+def get_process_macro_path() -> str | None:
+    """检测 Andrew Hayes PROCESS macro 的 process.sps 文件路径。
+
+    优先顺序：
+      1. PROCESS_MACRO_PATH 环境变量（显式指定）
+      2. 常见安装位置（用户 Downloads、Documents）
+      3. SPSS Extensions 目录（极少有人放这里，但顺便扫一下）
+    """
+    # 1) 显式环境变量
+    explicit = os.environ.get("PROCESS_MACRO_PATH", "").strip()
+    if explicit:
+        p = Path(explicit)
+        if p.is_file() and p.suffix.lower() == ".sps":
+            return str(p)
+        if p.is_dir():
+            candidate = p / "process.sps"
+            if candidate.exists():
+                return str(candidate)
+
+    # 2) 常见用户目录扫描（向下找两层，避免太深）
+    search_roots = [
+        Path.home() / "Downloads",
+        Path.home() / "Documents",
+        Path.home() / "Desktop",
+        Path("/Applications"),
+    ]
+    for root in search_roots:
+        if not root.exists():
+            continue
+        for candidate in root.glob("**/PROCESS*/process.sps"):
+            return str(candidate)
+        for candidate in root.glob("**/process.sps"):
+            # 必须确实在 PROCESS 包内
+            if "PROCESS" in str(candidate).upper() or "Hayes" in str(candidate):
+                return str(candidate)
+
+    return None
+
+
 def detect_capabilities() -> dict:
     """
     Detect what capabilities are available on this machine.
@@ -249,6 +288,7 @@ def detect_capabilities() -> dict:
         spss_path: str | None
         pyreadstat_version: str | None
         pandas_version: str | None
+        process_macro_path: str | None
     """
     caps: dict = {
         "pyreadstat": False,
@@ -256,6 +296,7 @@ def detect_capabilities() -> dict:
         "pandas_version": None,
         "spss": False,
         "spss_path": None,
+        "process_macro_path": get_process_macro_path(),
     }
 
     try:

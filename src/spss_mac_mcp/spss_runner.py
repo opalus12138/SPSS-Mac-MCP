@@ -604,3 +604,80 @@ def build_repeated_measures_anova_syntax(
         f"  /CRITERIA=ALPHA(.05)\n"
         f"  /WSDESIGN={within_factor_name}.\n"
     )
+
+
+# ════════════════════════════════════════════════════════════════════
+# PROCESS macro (Andrew Hayes) — Mediation / Moderation / Cond. Process
+# ════════════════════════════════════════════════════════════════════
+
+def build_process_syntax(
+    file_path: str,
+    process_macro_path: str,
+    *,
+    y: str,
+    x: str,
+    m: str | list[str] | None = None,
+    w: str | None = None,
+    z: str | None = None,
+    model: int = 4,
+    bootstrap: int = 5000,
+    seed: int | None = None,
+    total: bool = True,
+    standardized: bool = False,
+    covariates: list[str] | None = None,
+    cluster: str | None = None,
+    confidence: int = 95,
+    extra_options: dict | None = None,
+) -> str:
+    """构造 PROCESS macro 调用语法。
+
+    PROCESS by Andrew F. Hayes (https://www.processmacro.org).
+    要先 INSERT FILE 把 process.sps 加载到当前 SPSS 会话。
+
+    常用模型：
+      Model 1   单调节
+      Model 4   简单中介（最常用）
+      Model 6   链式中介
+      Model 7   第一阶段被调节的中介
+      Model 14  第二阶段被调节的中介
+      Model 58  双阶段被调节的中介
+    """
+    # M 可以是单变量或多变量（链式中介）
+    if m is None:
+        m_str = ""
+    elif isinstance(m, list):
+        m_str = " ".join(m)
+    else:
+        m_str = m
+
+    parts = [f"PROCESS y={y} /x={x}"]
+    if m_str:
+        parts.append(f"/m={m_str}")
+    if w:
+        parts.append(f"/w={w}")
+    if z:
+        parts.append(f"/z={z}")
+    if covariates:
+        parts.append(f"/cov={' '.join(covariates)}")
+    if cluster:
+        parts.append(f"/cluster={cluster}")
+    parts.append(f"/model={int(model)}")
+    parts.append(f"/boot={int(bootstrap)}")
+    if seed is not None:
+        parts.append(f"/seed={int(seed)}")
+    parts.append(f"/conf={int(confidence)}")
+    if total:
+        parts.append("/total=1")
+    if standardized:
+        parts.append("/stand=1")
+    if extra_options:
+        for k, v in extra_options.items():
+            parts.append(f"/{k}={v}")
+
+    process_call = " ".join(parts) + "."
+
+    return (
+        f"INSERT FILE='{process_macro_path}'.\n"
+        f"GET FILE='{file_path}'.\n"
+        f"{process_call}\n"
+    )

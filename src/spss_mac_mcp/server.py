@@ -521,6 +521,75 @@ async def spss_run_syntax(
 
 
 @mcp.tool(
+    name="spss_run_process",
+    description=(
+        "Run Andrew Hayes' PROCESS macro (v4.1) for mediation, moderation, and "
+        "conditional process analysis. Common models: 1 (moderation), 4 (simple "
+        "mediation), 6 (serial mediation), 7 (first-stage moderated mediation), "
+        "14 (second-stage moderated mediation). "
+        "Requires PROCESS macro installed (set PROCESS_MACRO_PATH or place under "
+        "~/Downloads). Requires IBM SPSS Statistics to be installed."
+    ),
+)
+async def spss_run_process(
+    file_path: str,
+    y: str,
+    x: str,
+    m: Optional[object] = None,
+    w: Optional[str] = None,
+    z: Optional[str] = None,
+    model: int = 4,
+    bootstrap: int = 5000,
+    seed: Optional[int] = None,
+    total: bool = True,
+    standardized: bool = False,
+    covariates: Optional[list] = None,
+    cluster: Optional[str] = None,
+    confidence: int = 95,
+    process_macro_path: Optional[str] = None,
+    extra_options: Optional[dict] = None,
+    ctx: Context = None,
+) -> str:
+    try:
+        err = _require_spss(ctx)
+        if err:
+            return f"Error: {err}"
+
+        from spss_mac_mcp.config import get_process_macro_path
+        from spss_mac_mcp.spss_runner import build_process_syntax, run_syntax
+
+        macro_path = process_macro_path or get_process_macro_path()
+        if not macro_path:
+            return (
+                "Error: PROCESS macro not found. Either install PROCESS from "
+                "https://www.processmacro.org and place under ~/Downloads, "
+                "or set the environment variable PROCESS_MACRO_PATH, "
+                "or pass process_macro_path=... to this tool."
+            )
+
+        syntax = build_process_syntax(
+            file_path=file_path,
+            process_macro_path=macro_path,
+            y=y, x=x, m=m, w=w, z=z,
+            model=model,
+            bootstrap=bootstrap,
+            seed=seed,
+            total=total,
+            standardized=standardized,
+            covariates=covariates,
+            cluster=cluster,
+            confidence=confidence,
+            extra_options=extra_options,
+        )
+        result = await run_syntax(syntax, data_file=None)
+        return _format_run_result(result)
+    except Exception as e:
+        if ctx:
+            await ctx.error(f"spss_run_process error: {e}")
+        return f"Error: {e}"
+
+
+@mcp.tool(
     name="spss_frequencies",
     description=(
         "Run SPSS FREQUENCIES on one or more variables. "
