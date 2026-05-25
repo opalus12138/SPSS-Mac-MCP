@@ -676,8 +676,25 @@ def build_process_syntax(
 
     process_call = " ".join(parts) + "."
 
+    # SET PRINTBACK=OFF 抑制 PROCESS 宏的源码 echo（防止 OMS 捕获 900KB 噪声）
     return (
+        "SET PRINTBACK=OFF.\n"
         f"INSERT FILE='{process_macro_path}'.\n"
         f"GET FILE='{file_path}'.\n"
         f"{process_call}\n"
+        "SET PRINTBACK=ON.\n"
     )
+
+
+def extract_process_results(raw_output: str) -> str:
+    """从 PROCESS 输出里抽出真实结果区，丢弃源码 echo。
+
+    PROCESS 在 SPSS XD 模式下会把整段 MATRIX 源码 echo 出来，导致 raw 文件
+    可达 900KB。真实结果总在最后一次 'PROCESS Procedure for SPSS Version'
+    横幅之后。该函数定位横幅，返回末尾干净区段。
+    """
+    banner = "***************** PROCESS Procedure for SPSS Version"
+    idx = raw_output.rfind(banner)
+    if idx < 0:
+        return raw_output
+    return raw_output[idx:]

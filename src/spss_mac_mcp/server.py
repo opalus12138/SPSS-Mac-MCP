@@ -556,7 +556,11 @@ async def spss_run_process(
             return f"Error: {err}"
 
         from spss_mac_mcp.config import get_process_macro_path
-        from spss_mac_mcp.spss_runner import build_process_syntax, run_syntax
+        from spss_mac_mcp.spss_runner import (
+            build_process_syntax,
+            extract_process_results,
+            run_syntax,
+        )
 
         macro_path = process_macro_path or get_process_macro_path()
         if not macro_path:
@@ -582,6 +586,15 @@ async def spss_run_process(
             extra_options=extra_options,
         )
         result = await run_syntax(syntax, data_file=None)
+
+        # 抽出 PROCESS 真实结果（PROCESS 会 echo 整段宏源码，最高 900KB+），
+        # 把 raw / markdown 截到真实结果区。
+        raw = result.get("output_raw", "")
+        if raw:
+            clean = extract_process_results(raw)
+            result["output_raw"] = clean
+            result["output_markdown"] = clean
+
         return _format_run_result(result)
     except Exception as e:
         if ctx:
