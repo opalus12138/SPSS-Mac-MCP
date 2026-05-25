@@ -410,20 +410,23 @@ def build_correlations_syntax(
     method: str,
     two_tailed: bool,
 ) -> str:
+    # SPSS CORRELATIONS/NONPAR CORR 的 PRINT 关键字是 TWOTAIL / ONETAIL，
+    # 不是 TAILS(2)/TAILS(1)。这里修正以匹配 SPSS 27+ 文档。
     vars_str = " ".join(variables)
-    sig = "TAILS(2)" if two_tailed else "TAILS(1)"
+    sig = "TWOTAIL" if two_tailed else "ONETAIL"
     if method.lower() == "spearman":
         return (
             f"GET FILE='{file_path}'.\n"
             f"NONPAR CORR\n"
             f"  /VARIABLES={vars_str}\n"
-            f"  /PRINT=SPEARMAN {sig}.\n"
+            f"  /PRINT=SPEARMAN {sig} NOSIG.\n"
         )
     return (
         f"GET FILE='{file_path}'.\n"
         f"CORRELATIONS\n"
         f"  /VARIABLES={vars_str}\n"
-        f"  /PRINT={sig}.\n"
+        f"  /PRINT={sig} NOSIG\n"
+        f"  /MISSING=PAIRWISE.\n"
     )
 
 
