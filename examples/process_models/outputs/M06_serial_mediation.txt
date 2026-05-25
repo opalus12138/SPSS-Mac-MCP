@@ -1,0 +1,104 @@
+***************** PROCESS Procedure for SPSS Version 4.1 *****************
+
+          Written by Andrew F. Hayes, Ph.D.       www.afhayes.com
+    Documentation available in Hayes (2022). www.guilford.com/p/hayes3
+
+**************************************************************************
+Model  : 6
+    Y  : TQ
+    X  : DTI
+   M1  : IP
+   M2  : Size
+
+Sample
+Size:  3000
+
+Custom
+Seed:     20260525
+
+**************************************************************************
+OUTCOME VARIABLE:
+ IP
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .1996      .0398      .4882   124.3619     1.0000  2998.0000      .0000
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant      .9165      .0269    34.0398      .0000      .8637      .9693
+DTI           .1590      .0143    11.1518      .0000      .1311      .1870
+
+**************************************************************************
+OUTCOME VARIABLE:
+ Size
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .2570      .0661      .9639   106.0117     2.0000  2997.0000      .0000
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant    21.4385      .0445   481.2616      .0000    21.3512    21.5259
+DTI           .1077      .0204     5.2660      .0000      .0676      .1478
+IP            .3144      .0257    12.2514      .0000      .2641      .3647
+
+**************************************************************************
+OUTCOME VARIABLE:
+ TQ
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .1453      .0211      .5060    21.5321     3.0000  2996.0000      .0000
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant     5.5329      .2856    19.3762      .0000     4.9730     6.0928
+DTI           .0379      .0149     2.5446      .0110      .0087      .0671
+IP            .0869      .0191     4.5621      .0000      .0496      .1243
+Size         -.0920      .0132    -6.9499      .0000     -.1179     -.0660
+
+************************** TOTAL EFFECT MODEL ****************************
+OUTCOME VARIABLE:
+ TQ
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .0463      .0021      .5154     6.4432     1.0000  2998.0000      .0112
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant     3.6142      .0277   130.6471      .0000     3.5600     3.6685
+DTI           .0372      .0147     2.5384      .0112      .0085      .0659
+
+************** TOTAL, DIRECT, AND INDIRECT EFFECTS OF X ON Y **************
+
+Total effect of X on Y
+     Effect         se          t          p       LLCI       ULCI
+      .0372      .0147     2.5384      .0112      .0085      .0659
+
+Direct effect of X on Y
+     Effect         se          t          p       LLCI       ULCI
+      .0379      .0149     2.5446      .0110      .0087      .0671
+
+Indirect effect(s) of X on Y:
+          Effect     BootSE   BootLLCI   BootULCI
+TOTAL     -.0007      .0038     -.0080      .0067
+Ind1       .0138      .0033      .0080      .0208
+Ind2      -.0099      .0024     -.0151     -.0055
+Ind3      -.0046      .0009     -.0067     -.0030
+
+Indirect effect key:
+Ind1 DTI         ->    IP          ->    TQ
+Ind2 DTI         ->    Size        ->    TQ
+Ind3 DTI         ->    IP          ->    Size        ->    TQ
+
+*********************** ANALYSIS NOTES AND ERRORS ************************
+
+Level of confidence for all confidence intervals in output:
+  95.0000
+
+Number of bootstrap samples for percentile bootstrap confidence intervals:
+  1000
+
+------ END MATRIX -----

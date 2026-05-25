@@ -1,0 +1,83 @@
+***************** PROCESS Procedure for SPSS Version 4.1 *****************
+
+          Written by Andrew F. Hayes, Ph.D.       www.afhayes.com
+    Documentation available in Hayes (2022). www.guilford.com/p/hayes3
+
+**************************************************************************
+Model  : 7
+    Y  : TQ
+    X  : DTI
+    M  : IP
+    W  : SOE
+
+Sample
+Size:  3000
+
+Custom
+Seed:     20260525
+
+**************************************************************************
+OUTCOME VARIABLE:
+ IP
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .2706      .0732      .4715    78.9334     3.0000  2996.0000      .0000
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant      .8681      .0299    29.0487      .0000      .8095      .9267
+DTI           .1416      .0164     8.6337      .0000      .1095      .1738
+SOE           .3180      .0650     4.8914      .0000      .1905      .4455
+Int_1        -.0097      .0324     -.3008      .7636     -.0733      .0538
+
+Product terms key:
+ Int_1    :        DTI      x        SOE
+
+Test(s) of highest order unconditional interaction(s):
+       R2-chng          F        df1        df2          p
+X*W      .0000      .0905     1.0000  2996.0000      .7636
+
+**************************************************************************
+OUTCOME VARIABLE:
+ TQ
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .0730      .0053      .5140     8.0212     2.0000  2997.0000      .0003
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant     3.5611      .0325   109.4779      .0000     3.4973     3.6249
+DTI           .0280      .0149     1.8731      .0612     -.0013      .0572
+IP            .0580      .0187     3.0953      .0020      .0213      .0947
+
+****************** DIRECT AND INDIRECT EFFECTS OF X ON Y *****************
+
+Direct effect of X on Y
+     Effect         se          t          p       LLCI       ULCI
+      .0280      .0149     1.8731      .0612     -.0013      .0572
+
+Conditional indirect effects of X on Y:
+
+INDIRECT EFFECT:
+ DTI         ->    IP          ->    TQ
+
+        SOE     Effect     BootSE   BootLLCI   BootULCI
+      .0000      .0082      .0029      .0030      .0142
+     1.0000      .0076      .0030      .0026      .0144
+
+Index of moderated mediation (difference between conditional indirect effects):
+         Index     BootSE   BootLLCI   BootULCI
+SOE     -.0006      .0019     -.0048      .0033
+---
+
+*********************** ANALYSIS NOTES AND ERRORS ************************
+
+Level of confidence for all confidence intervals in output:
+  95.0000
+
+Number of bootstrap samples for percentile bootstrap confidence intervals:
+  1000
+
+------ END MATRIX -----

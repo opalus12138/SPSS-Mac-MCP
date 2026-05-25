@@ -1,0 +1,92 @@
+***************** PROCESS Procedure for SPSS Version 4.1 *****************
+
+          Written by Andrew F. Hayes, Ph.D.       www.afhayes.com
+    Documentation available in Hayes (2022). www.guilford.com/p/hayes3
+
+**************************************************************************
+Model  : 58
+    Y  : TQ
+    X  : DTI
+    M  : IP
+    W  : SOE
+
+Sample
+Size:  3000
+
+Custom
+Seed:     20260525
+
+**************************************************************************
+OUTCOME VARIABLE:
+ IP
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .2706      .0732      .4715    78.9334     3.0000  2996.0000      .0000
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant      .8681      .0299    29.0487      .0000      .8095      .9267
+DTI           .1416      .0164     8.6337      .0000      .1095      .1738
+SOE           .3180      .0650     4.8914      .0000      .1905      .4455
+Int_1        -.0097      .0324     -.3008      .7636     -.0733      .0538
+
+Product terms key:
+ Int_1    :        DTI      x        SOE
+
+Test(s) of highest order unconditional interaction(s):
+       R2-chng          F        df1        df2          p
+X*W      .0000      .0905     1.0000  2996.0000      .7636
+
+**************************************************************************
+OUTCOME VARIABLE:
+ TQ
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .0733      .0054      .5143     4.0405     4.0000  2995.0000      .0029
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant     3.5568      .0348   102.1034      .0000     3.4885     3.6252
+DTI           .0277      .0150     1.8445      .0652     -.0017      .0571
+IP            .0613      .0223     2.7437      .0061      .0175      .1050
+SOE           .0231      .0642      .3590      .7197     -.1029      .1490
+Int_1        -.0138      .0421     -.3269      .7438     -.0963      .0688
+
+Product terms key:
+ Int_1    :        IP       x        SOE
+
+Test(s) of highest order unconditional interaction(s):
+       R2-chng          F        df1        df2          p
+M*W      .0000      .1068     1.0000  2995.0000      .7438
+
+****************** DIRECT AND INDIRECT EFFECTS OF X ON Y *****************
+
+Direct effect of X on Y
+     Effect         se          t          p       LLCI       ULCI
+      .0277      .0150     1.8445      .0652     -.0017      .0571
+
+Conditional indirect effects of X on Y:
+
+INDIRECT EFFECT:
+ DTI         ->    IP          ->    TQ
+
+        SOE     Effect     BootSE   BootLLCI   BootULCI
+      .0000      .0087      .0034      .0026      .0156
+     1.0000      .0063      .0049     -.0024      .0171
+
+Index of moderated mediation (difference between conditional indirect effects):
+         Index     BootSE   BootLLCI   BootULCI
+SOE     -.0024      .0060     -.0143      .0091
+---
+
+*********************** ANALYSIS NOTES AND ERRORS ************************
+
+Level of confidence for all confidence intervals in output:
+  95.0000
+
+Number of bootstrap samples for percentile bootstrap confidence intervals:
+  1000
+
+------ END MATRIX -----

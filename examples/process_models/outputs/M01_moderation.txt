@@ -1,0 +1,45 @@
+***************** PROCESS Procedure for SPSS Version 4.1 *****************
+
+          Written by Andrew F. Hayes, Ph.D.       www.afhayes.com
+    Documentation available in Hayes (2022). www.guilford.com/p/hayes3
+
+**************************************************************************
+Model  : 1
+    Y  : TQ
+    X  : DTI
+    W  : SOE
+
+Sample
+Size:  3000
+
+Custom
+Seed:     20260525
+
+**************************************************************************
+OUTCOME VARIABLE:
+ TQ
+
+Model Summary
+          R       R-sq        MSE          F        df1        df2          p
+      .0489      .0024      .5156     2.3927     3.0000  2996.0000      .0667
+
+Model
+              coeff         se          t          p       LLCI       ULCI
+constant     3.6174      .0313   115.7554      .0000     3.5561     3.6787
+DTI           .0317      .0172     1.8497      .0645     -.0019      .0654
+SOE          -.0063      .0680     -.0920      .9267     -.1396      .1270
+Int_1         .0157      .0339      .4623      .6439     -.0508      .0821
+
+Product terms key:
+ Int_1    :        DTI      x        SOE
+
+Test(s) of highest order unconditional interaction(s):
+       R2-chng          F        df1        df2          p
+X*W      .0001      .2137     1.0000  2996.0000      .6439
+
+*********************** ANALYSIS NOTES AND ERRORS ************************
+
+Level of confidence for all confidence intervals in output:
+  95.0000
+
+------ END MATRIX -----
